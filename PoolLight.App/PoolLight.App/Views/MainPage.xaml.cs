@@ -1,4 +1,4 @@
-﻿namespace PoolLight.App
+﻿namespace PoolLight.App.Views
 {
     /// <summary>
     /// Une page vide peut être utilisée seule ou constituer une page de destination au sein d'un frame.

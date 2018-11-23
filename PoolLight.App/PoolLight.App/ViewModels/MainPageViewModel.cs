@@ -1,13 +1,31 @@
-﻿using Windows.UI;
+﻿using System.Windows.Input;
+using Windows.UI;
 using Windows.UI.Xaml.Media;
 
 namespace PoolLight.App.ViewModels
 {
-    public class MainPageViewModel
+    public class MainPageViewModel : Prism.Mvvm.BindableBase
     {
-        public SolidColorBrush CouleurBouton { get; set; }
+        private SolidColorBrush _couleurBouton = new SolidColorBrush(Colors.Black);
+
+        public MainPageViewModel()
+        {
+            CommandeAllumer = new Prism.Commands.DelegateCommand(Basculer);
+        }
+
+        public SolidColorBrush CouleurBouton
+        {
+            get { return _couleurBouton; }
+            set
+            {
+                _couleurBouton = value;
+                RaisePropertyChanged();
+            }
+        }
 
         public bool EstAllume { get; private set; }
+
+        public ICommand CommandeAllumer { get; set; }
 
         private void Allumer()
         {
@@ -21,7 +39,7 @@ namespace PoolLight.App.ViewModels
             EstAllume = false;
         }
 
-        public void Basculer()
+        private void Basculer()
         {
             if (EstAllume)
             {
