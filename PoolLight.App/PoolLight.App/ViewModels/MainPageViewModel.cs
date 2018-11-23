@@ -14,7 +14,7 @@ namespace PoolLight.App.ViewModels
 
         public MainPageViewModel()
         {
-            CommandeAllumer = new Prism.Commands.DelegateCommand(Basculer);
+            CommandeAllumer = new Prism.Commands.DelegateCommand(Basculer, () => !ActiviteEnCours);
             //_clientApi = (clientApi ?? new ClientApi());
             _clientApi = new ClientApi();
         }
@@ -25,6 +25,18 @@ namespace PoolLight.App.ViewModels
             set
             {
                 _couleurBouton = value;
+                RaisePropertyChanged();
+            }
+        }
+
+        private bool _activiteEnCours = false;
+
+        public bool ActiviteEnCours
+        {
+            get { return _activiteEnCours; }
+            set
+            {
+                _activiteEnCours = value;
                 RaisePropertyChanged();
             }
         }
@@ -53,6 +65,8 @@ namespace PoolLight.App.ViewModels
 
         private async void Basculer()
         {
+            ActiviteEnCours = true;
+
             if (EstAllume)
             {
                 await Eteindre();
@@ -61,6 +75,8 @@ namespace PoolLight.App.ViewModels
             {
                 await Allumer();
             }
+
+            ActiviteEnCours = false;
         }
     }
 }
