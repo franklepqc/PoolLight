@@ -9,9 +9,22 @@ namespace PoolLight.App.ViewModels
 {
     public class MainPageViewModel : Prism.Mvvm.BindableBase
     {
-        private SolidColorBrush _couleurBouton = new SolidColorBrush(Colors.Black);
-        private IClientApi _clientApi;
+        #region Fields
 
+        /// <summary>
+        /// Champs.
+        /// </summary>
+        private bool _activiteEnCours = false;
+        private IClientApi _clientApi;
+        private SolidColorBrush _couleurBouton = new SolidColorBrush(Colors.Black);
+
+        #endregion Fields
+
+        #region Constructors
+
+        /// <summary>
+        /// Constructeur par défaut.
+        /// </summary>
         public MainPageViewModel()
         {
             CommandeAllumer = new Prism.Commands.DelegateCommand(Basculer, () => !ActiviteEnCours);
@@ -19,18 +32,14 @@ namespace PoolLight.App.ViewModels
             _clientApi = new ClientApi();
         }
 
-        public SolidColorBrush CouleurBouton
-        {
-            get { return _couleurBouton; }
-            set
-            {
-                _couleurBouton = value;
-                RaisePropertyChanged();
-            }
-        }
+        #endregion Constructors
 
-        private bool _activiteEnCours = false;
+        #region Properties
 
+        /// <summary>
+        /// Activité en cours.
+        /// Savoir si la demande est acheminée.
+        /// </summary>
         public bool ActiviteEnCours
         {
             get { return _activiteEnCours; }
@@ -41,10 +50,37 @@ namespace PoolLight.App.ViewModels
             }
         }
 
-        public bool EstAllume { get; private set; }
-
+        /// <summary>
+        /// Commande (bouton).
+        /// </summary>
         public ICommand CommandeAllumer { get; set; }
 
+        /// <summary>
+        /// Couleur du bouton.
+        /// </summary>
+        public SolidColorBrush CouleurBouton
+        {
+            get { return _couleurBouton; }
+            set
+            {
+                _couleurBouton = value;
+                RaisePropertyChanged();
+            }
+        }
+
+        /// <summary>
+        /// Indicateur si la lumière est allumée.
+        /// </summary>
+        public bool EstAllume { get; private set; }
+
+        #endregion Properties
+
+        #region Methods
+
+        /// <summary>
+        /// Allume la lumière.
+        /// </summary>
+        /// <returns>Tâche.</returns>
         private async Task Allumer()
         {
             if (await _clientApi.AllumerAsync())
@@ -54,15 +90,10 @@ namespace PoolLight.App.ViewModels
             }
         }
 
-        private async Task Eteindre()
-        {
-            if (await _clientApi.EteindreAsync())
-            {
-                CouleurBouton = new SolidColorBrush(Colors.Black);
-                EstAllume = false;
-            }
-        }
-
+        /// <summary>
+        /// Bascule (toggle).
+        /// </summary>
+        /// <returns>Tâche.</returns>
         private async void Basculer()
         {
             ActiviteEnCours = true;
@@ -78,5 +109,20 @@ namespace PoolLight.App.ViewModels
 
             ActiviteEnCours = false;
         }
+
+        /// <summary>
+        /// Éteint la lumière.
+        /// </summary>
+        /// <returns>Tâche.</returns>
+        private async Task Eteindre()
+        {
+            if (await _clientApi.EteindreAsync())
+            {
+                CouleurBouton = new SolidColorBrush(Colors.Black);
+                EstAllume = false;
+            }
+        }
+
+        #endregion Methods
     }
 }
