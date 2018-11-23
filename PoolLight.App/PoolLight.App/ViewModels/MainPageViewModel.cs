@@ -1,4 +1,7 @@
-﻿using System.Windows.Input;
+﻿using PoolLight.App.Clients;
+using PoolLight.App.Clients.Interfaces;
+using System.Threading.Tasks;
+using System.Windows.Input;
 using Windows.UI;
 using Windows.UI.Xaml.Media;
 
@@ -7,10 +10,13 @@ namespace PoolLight.App.ViewModels
     public class MainPageViewModel : Prism.Mvvm.BindableBase
     {
         private SolidColorBrush _couleurBouton = new SolidColorBrush(Colors.Black);
+        private IClientApi _clientApi;
 
         public MainPageViewModel()
         {
             CommandeAllumer = new Prism.Commands.DelegateCommand(Basculer);
+            //_clientApi = (clientApi ?? new ClientApi());
+            _clientApi = new ClientApi();
         }
 
         public SolidColorBrush CouleurBouton
@@ -27,27 +33,33 @@ namespace PoolLight.App.ViewModels
 
         public ICommand CommandeAllumer { get; set; }
 
-        private void Allumer()
+        private async Task Allumer()
         {
-            CouleurBouton = new SolidColorBrush(Colors.Green);
-            EstAllume = true;
+            if (await _clientApi.AllumerAsync())
+            {
+                CouleurBouton = new SolidColorBrush(Colors.Green);
+                EstAllume = true;
+            }
         }
 
-        private void Eteindre()
+        private async Task Eteindre()
         {
-            CouleurBouton = new SolidColorBrush(Colors.Black);
-            EstAllume = false;
+            if (await _clientApi.EteindreAsync())
+            {
+                CouleurBouton = new SolidColorBrush(Colors.Black);
+                EstAllume = false;
+            }
         }
 
-        private void Basculer()
+        private async void Basculer()
         {
             if (EstAllume)
             {
-                Eteindre();
+                await Eteindre();
             }
             else
             {
-                Allumer();
+                await Allumer();
             }
         }
     }
