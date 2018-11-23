@@ -15,6 +15,7 @@ namespace PoolLight.App.ViewModels
         /// Champs.
         /// </summary>
         private bool _activiteEnCours = false;
+        private bool _lumiereAllumee = false;
         private IClientApi _clientApi;
         private SolidColorBrush _couleurBouton = new SolidColorBrush(Colors.Black);
 
@@ -68,11 +69,6 @@ namespace PoolLight.App.ViewModels
             }
         }
 
-        /// <summary>
-        /// Indicateur si la lumière est allumée.
-        /// </summary>
-        public bool EstAllume { get; private set; }
-
         #endregion Properties
 
         #region Methods
@@ -86,7 +82,7 @@ namespace PoolLight.App.ViewModels
             if (await _clientApi.AllumerAsync())
             {
                 CouleurBouton = new SolidColorBrush(Colors.Green);
-                EstAllume = true;
+                _lumiereAllumee = true;
             }
         }
 
@@ -98,7 +94,7 @@ namespace PoolLight.App.ViewModels
         {
             ActiviteEnCours = true;
 
-            if (EstAllume)
+            if (_lumiereAllumee)
             {
                 await Eteindre();
             }
@@ -119,7 +115,7 @@ namespace PoolLight.App.ViewModels
             if (await _clientApi.EteindreAsync())
             {
                 CouleurBouton = new SolidColorBrush(Colors.Black);
-                EstAllume = false;
+                _lumiereAllumee = false;
             }
         }
 
