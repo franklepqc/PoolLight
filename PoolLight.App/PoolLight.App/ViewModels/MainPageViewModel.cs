@@ -26,11 +26,11 @@ namespace PoolLight.App.ViewModels
         /// <summary>
         /// Constructeur par défaut.
         /// </summary>
-        public MainPageViewModel()
+        /// <param name="clientApi">Client d'API.</param>
+        public MainPageViewModel(IClientApi clientApi)
         {
             CommandeAllumer = new Prism.Commands.DelegateCommand(Basculer, () => !ActiviteEnCours);
-            //_clientApi = (clientApi ?? new ClientApi());
-            _clientApi = new ClientApi();
+            _clientApi = (clientApi ?? new ClientApi());
         }
 
         #endregion Constructors
