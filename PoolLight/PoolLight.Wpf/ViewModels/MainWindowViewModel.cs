@@ -1,13 +1,12 @@
-﻿using PoolLight.App.Clients;
-using PoolLight.App.Clients.Interfaces;
+﻿using PoolLight.Wpf.Clients;
+using PoolLight.Wpf.Clients.Interfaces;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using Windows.UI;
-using Windows.UI.Xaml.Media;
+using System.Windows.Media;
 
-namespace PoolLight.App.ViewModels
+namespace PoolLight.Wpf.ViewModels
 {
-    public class MainPageViewModel : Prism.Mvvm.BindableBase
+    public class MainWindowViewModel : Prism.Mvvm.BindableBase
     {
         #region Fields
 
@@ -27,7 +26,7 @@ namespace PoolLight.App.ViewModels
         /// Constructeur par défaut.
         /// </summary>
         /// <param name="clientApi">Client d'API.</param>
-        public MainPageViewModel(IClientApi clientApi)
+        public MainWindowViewModel(IClientApi clientApi)
         {
             CommandeAllumer = new Prism.Commands.DelegateCommand(Basculer, () => !ActiviteEnCours);
             _clientApi = (clientApi ?? new ClientApi());

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 
-namespace PoolLight.App.Clients
+namespace PoolLight.Wpf.Clients
 {
     /// <summary>
     /// Implémentation de l'API pour le globe.

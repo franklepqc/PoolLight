@@ -1,13 +1,13 @@
-﻿<Page
-    x:Class="PoolLight.App.Views.MainPage"
-    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:prism="using:Prism.Windows.Mvvm"
-    prism:ViewModelLocator.AutoWireViewModel="True"
-    mc:Ignorable="d"
-    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+﻿<Window x:Class="PoolLight.Wpf.Views.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:PoolLight.Wpf"
+        xmlns:prism="http://prismlibrary.com/"
+        mc:Ignorable="d"
+        prism:ViewModelLocator.AutoWireViewModel="True"
+        Title="MainWindow" Height="450" Width="800">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="*" />
@@ -46,7 +46,7 @@
                     </ControlTemplate>
                 </Button.Template>
             </Button>
-            <ProgressRing IsActive="{Binding Path=ActiviteEnCours}">
+            <!--<ProgressRing IsActive="{Binding Path=ActiviteEnCours}">
                 <ProgressRing.Style>
                     <Style TargetType="ProgressRing">
                         <Setter Property="VerticalAlignment" Value="Center" />
@@ -55,8 +55,9 @@
                         <Setter Property="Width" Value="350" />
                     </Style>
                 </ProgressRing.Style>
-            </ProgressRing>
+            </ProgressRing>-->
         </Grid>
 
     </Grid>
-</Page>
+
+</Window>

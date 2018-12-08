@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 
-namespace PoolLight.App.Clients.Interfaces
+namespace PoolLight.Wpf.Clients.Interfaces
 {
     public interface IClientApi
     {
