@@ -6,6 +6,7 @@
         xmlns:local="clr-namespace:PoolLight.Wpf"
         xmlns:prism="http://prismlibrary.com/"
         mc:Ignorable="d"
+        d:DesignHeight="1024" d:DesignWidth="768"
         prism:ViewModelLocator.AutoWireViewModel="True"
         Title="MainWindow">
     <Grid>
@@ -14,16 +15,24 @@
             <RowDefinition Height="3*" />
         </Grid.RowDefinitions>
 
-        <TextBlock Grid.Row="0">
-            <TextBlock.Style>
-                <Style TargetType="TextBlock">
-                    <Setter Property="VerticalAlignment" Value="Center" />
-                    <Setter Property="HorizontalAlignment" Value="Center" />
-                    <Setter Property="FontSize" Value="64" />
-                </Style>
-            </TextBlock.Style>
-            Appuyez pour allumer/éteindre
-        </TextBlock>
+        <Grid Grid.Row="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="3*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <TextBlock Grid.Column="0" Text="{Binding Path=Temperature, Mode=OneWay}">
+                <TextBlock.Style>
+                    <Style TargetType="TextBlock">
+                        <Setter Property="VerticalAlignment" Value="Center" />
+                        <Setter Property="HorizontalAlignment" Value="Center" />
+                        <Setter Property="FontSize" Value="64" />
+                    </Style>
+                </TextBlock.Style>
+            </TextBlock>
+
+            <Button Grid.Column="1" Command="{Binding Path=CommandeModeTemperature, Mode=OneTime}" Content="{Binding Path=ModeTemperature, Mode=OneWay}" />
+        </Grid>        
 
         <Grid Grid.Row="1">
             <Button Background="{Binding Path=CouleurBouton}" Command="{Binding Path=CommandeAllumer, Mode=OneTime}">
