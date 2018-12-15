@@ -21,7 +21,7 @@
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
 
-            <TextBlock Grid.Column="0" Text="{Binding Path=Temperature, Mode=OneWay}">
+            <TextBlock Name="temperature" Grid.Column="0" Text="{Binding Path=Temperature, Mode=OneWay}">
                 <TextBlock.Style>
                     <Style TargetType="TextBlock">
                         <Setter Property="VerticalAlignment" Value="Center" />
@@ -31,7 +31,13 @@
                 </TextBlock.Style>
             </TextBlock>
 
-            <Button Grid.Column="1" Command="{Binding Path=CommandeModeTemperature, Mode=OneTime}" Content="{Binding Path=ModeTemperature, Mode=OneWay}" />
+            <Button Grid.Column="1" Command="{Binding Path=CommandeModeTemperature, Mode=OneTime}" Content="{Binding Path=ModeTemperatureStr, Mode=OneWay}">
+                <Button.Style>
+                    <Style TargetType="Button">
+                        <Setter Property="FontSize" Value="{Binding Path=FontSize, Mode=OneWay, ElementName=temperature}" />
+                    </Style>
+                </Button.Style>
+            </Button>
         </Grid>        
 
         <Grid Grid.Row="1">

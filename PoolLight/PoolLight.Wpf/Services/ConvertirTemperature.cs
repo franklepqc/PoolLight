@@ -1,4 +1,5 @@
 ﻿using PoolLight.Wpf.ViewModels;
+using System;
 
 namespace PoolLight.Wpf.Services
 {
@@ -6,10 +7,20 @@ namespace PoolLight.Wpf.Services
     {
         public float Convertir(ModeTempEnum mode, float temperatureEnCelcius)
         {
-            if (mode == ModeTempEnum.Celcius)
-                return temperatureEnCelcius;
-            else
-                return temperatureEnCelcius + 273.15f;
+            switch (mode)
+            {
+                case ModeTempEnum.Celcius:
+                    return temperatureEnCelcius;
+
+                case ModeTempEnum.Fahrenheit:
+                    return (temperatureEnCelcius * 1.8f) + 32f;
+
+                case ModeTempEnum.Kelvin:
+                    return temperatureEnCelcius + 273.15f;
+
+                default:
+                    throw new NotImplementedException();
+            }
         }
     }
 }

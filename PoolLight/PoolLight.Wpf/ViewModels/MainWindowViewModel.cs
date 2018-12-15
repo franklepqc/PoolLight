@@ -98,6 +98,9 @@ namespace PoolLight.Wpf.ViewModels
             }
         }
 
+        /// <summary>
+        /// Mode de temperature.
+        /// </summary>
         public ModeTempEnum ModeTemperature
         {
             get => _modeTemperature;
@@ -106,7 +109,16 @@ namespace PoolLight.Wpf.ViewModels
                 _modeTemperature = value;
                 RaisePropertyChanged();
                 RaisePropertyChanged(nameof(Temperature));
+                RaisePropertyChanged(nameof(ModeTemperatureStr));
             }
+        }
+
+        /// <summary>
+        /// Mode de temperature.
+        /// </summary>
+        public string ModeTemperatureStr
+        {
+            get => (ModeTemperature == ModeTempEnum.Celcius ? "°C" : (ModeTemperature == ModeTempEnum.Fahrenheit ? "°F" : "K"));
         }
 
         #endregion Properties
@@ -167,6 +179,10 @@ namespace PoolLight.Wpf.ViewModels
         {
             if (ModeTemperature == ModeTempEnum.Celcius)
             {
+                ModeTemperature = ModeTempEnum.Fahrenheit;
+            }
+            else if (ModeTemperature == ModeTempEnum.Fahrenheit)
+            {
                 ModeTemperature = ModeTempEnum.Kelvin;
             }
             else
@@ -183,10 +199,10 @@ namespace PoolLight.Wpf.ViewModels
     /// </summary>
     public enum ModeTempEnum
     {
-        [Display(Name = "Celcius")]
         Celcius,
 
-        [Display(Name = "Kelvin")]
+        Fahrenheit,
+
         Kelvin
     }
 }
