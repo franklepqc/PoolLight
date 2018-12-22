@@ -24,6 +24,8 @@ namespace PoolLight.Wpf.ViewModels
         /// </summary>
         private bool _activiteEnCours = false;
         private bool _lumiereAllumee = false;
+        private float _temperatureEnCelcius;
+        private float _pH;
         private SolidColorBrush _couleurBouton = new SolidColorBrush(Colors.Black);
         private ModeTempEnum _modeTemperature = ModeTempEnum.Fahrenheit;
 
@@ -39,8 +41,11 @@ namespace PoolLight.Wpf.ViewModels
         {
             CommandeAllumer = new Prism.Commands.DelegateCommand(Basculer, () => !ActiviteEnCours);
             CommandeModeTemperature = new Prism.Commands.DelegateCommand(BasculerTemperature);
+            CommandeRafraichir = new Prism.Commands.DelegateCommand(Rafraichir, () => !ActiviteEnCours);
             _clientApi = (clientApi ?? new ClientApi());
             _convertirTemperature = (convertirTemperature ?? new ConvertirTemperature());
+
+            Rafraichir();
         }
 
         #endregion Constructors
@@ -72,11 +77,21 @@ namespace PoolLight.Wpf.ViewModels
         public ICommand CommandeModeTemperature { get; set; }
 
         /// <summary>
+        /// Commande.
+        /// </summary>
+        public ICommand CommandeRafraichir { get; set; }
+
+        /// <summary>
         /// Température.
         /// </summary>
         public float Temperature
         {
-            get => _convertirTemperature.Convertir(ModeTemperature, _clientApi.ObtenirTemperatureAsync().Result);
+            get => _convertirTemperature.Convertir(ModeTemperature, _temperatureEnCelcius);
+            set
+            {
+                _temperatureEnCelcius = value;
+                RaisePropertyChanged();
+            }
         }
 
         /// <summary>
@@ -84,7 +99,12 @@ namespace PoolLight.Wpf.ViewModels
         /// </summary>
         public float pH
         {
-            get => _clientApi.ObtenirpH().Result;
+            get => _pH;
+            set
+            {
+                _pH = value;
+                RaisePropertyChanged();
+            }
         }
 
         /// <summary>
@@ -191,6 +211,15 @@ namespace PoolLight.Wpf.ViewModels
             {
                 ModeTemperature = ModeTempEnum.Celcius;
             }
+        }
+
+        /// <summary>
+        /// Rafraichir les valeurs.
+        /// </summary>
+        private async void Rafraichir()
+        {
+            Temperature = await _clientApi.ObtenirTemperatureAsync();
+            pH = await _clientApi.ObtenirpH();
         }
 
         #endregion Methods
