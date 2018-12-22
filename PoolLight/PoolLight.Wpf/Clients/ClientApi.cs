@@ -84,5 +84,19 @@ namespace PoolLight.Wpf.Clients
         /// <returns>Un objet de type DeviceClient.</returns>
         private DeviceClient ObtenirClient() => 
             DeviceClient.CreateFromConnectionString(IOT_HUB_CONN_STRING, TransportType.Amqp);
+
+        /// <summary>
+        /// Obtenir la température.
+        /// </summary>
+        /// <returns></returns>
+        public Task<float> ObtenirTemperatureAsync() =>
+            Task.FromResult(15.56f);
+
+        /// <summary>
+        /// Obtenir le pH.
+        /// </summary>
+        /// <returns></returns>
+        public Task<float> ObtenirpH() =>
+            Task.FromResult(7f);
     }
 }

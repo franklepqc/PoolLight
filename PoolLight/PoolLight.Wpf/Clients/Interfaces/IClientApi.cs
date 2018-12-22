@@ -7,5 +7,9 @@ namespace PoolLight.Wpf.Clients.Interfaces
         Task<bool> AllumerAsync();
 
         Task<bool> EteindreAsync();
+
+        Task<float> ObtenirTemperatureAsync();
+
+        Task<float> ObtenirpH();
     }
 }

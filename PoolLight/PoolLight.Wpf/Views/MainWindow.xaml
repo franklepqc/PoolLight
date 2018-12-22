@@ -6,73 +6,91 @@
         xmlns:local="clr-namespace:PoolLight.Wpf"
         xmlns:prism="http://prismlibrary.com/"
         mc:Ignorable="d"
-        d:DesignHeight="1024" d:DesignWidth="768"
+        Height="400" Width="200"
+        ResizeMode="NoResize"
         prism:ViewModelLocator.AutoWireViewModel="True"
         Title="MainWindow">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="*" />
-            <RowDefinition Height="3*" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="200" />
         </Grid.RowDefinitions>
 
-        <Grid Grid.Row="0">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="3*" />
-                <ColumnDefinition Width="*" />
-            </Grid.ColumnDefinitions>
+        <GroupBox Header="Temperature" Grid.Row="0">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="3*" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
 
-            <TextBlock Name="temperature" Grid.Column="0" Text="{Binding Path=Temperature, Mode=OneWay}">
-                <TextBlock.Style>
-                    <Style TargetType="TextBlock">
-                        <Setter Property="VerticalAlignment" Value="Center" />
-                        <Setter Property="HorizontalAlignment" Value="Center" />
-                        <Setter Property="FontSize" Value="64" />
-                    </Style>
-                </TextBlock.Style>
-            </TextBlock>
+                <TextBlock Name="temperature" Grid.Column="0" Text="{Binding Path=Temperature, Mode=OneWay}">
+                    <TextBlock.Style>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="VerticalAlignment" Value="Center" />
+                            <Setter Property="HorizontalAlignment" Value="Center" />
+                            <Setter Property="FontSize" Value="16" />
+                        </Style>
+                    </TextBlock.Style>
+                </TextBlock>
 
-            <Button Grid.Column="1" Command="{Binding Path=CommandeModeTemperature, Mode=OneTime}" Content="{Binding Path=ModeTemperatureStr, Mode=OneWay}">
-                <Button.Style>
-                    <Style TargetType="Button">
-                        <Setter Property="FontSize" Value="{Binding Path=FontSize, Mode=OneWay, ElementName=temperature}" />
-                    </Style>
-                </Button.Style>
-            </Button>
-        </Grid>        
+                <Button Grid.Column="1" Command="{Binding Path=CommandeModeTemperature, Mode=OneTime}" Content="{Binding Path=ModeTemperatureStr, Mode=OneWay}">
+                    <Button.Style>
+                        <Style TargetType="Button">
+                            <Setter Property="FontSize" Value="{Binding Path=FontSize, Mode=OneWay, ElementName=temperature}" />
+                        </Style>
+                    </Button.Style>
+                </Button>
+            </Grid>
+        </GroupBox>
 
-        <Grid Grid.Row="1">
-            <Button Background="{Binding Path=CouleurBouton}" Command="{Binding Path=CommandeAllumer, Mode=OneTime}">
-                <Button.Style>
-                    <Style TargetType="Button">
-                        <Setter Property="VerticalAlignment" Value="Center" />
-                        <Setter Property="HorizontalAlignment" Value="Center" />
-                        <Setter Property="Height" Value="400" />
-                        <Setter Property="Width" Value="400" />
-                    </Style>
-                </Button.Style>
-                <Button.Template>
-                    <ControlTemplate>
-                        <Ellipse Height="{TemplateBinding Height}"
-                             Width="{TemplateBinding Width}"
-                             Stroke="Black"
-                             StrokeThickness="5"
-                             Fill="{TemplateBinding Background}">
-                        </Ellipse>
-                    </ControlTemplate>
-                </Button.Template>
-            </Button>
-            <!--<ProgressRing IsActive="{Binding Path=ActiviteEnCours}">
-                <ProgressRing.Style>
-                    <Style TargetType="ProgressRing">
-                        <Setter Property="VerticalAlignment" Value="Center" />
-                        <Setter Property="HorizontalAlignment" Value="Center" />
-                        <Setter Property="Height" Value="350" />
-                        <Setter Property="Width" Value="350" />
-                    </Style>
-                </ProgressRing.Style>
-            </ProgressRing>-->
-        </Grid>
+        <GroupBox Header="pH" Grid.Row="1">
+            <Grid>
+                <TextBlock Name="pH" Text="{Binding Path=pH, Mode=OneWay}">
+                    <TextBlock.Style>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="VerticalAlignment" Value="Center" />
+                            <Setter Property="HorizontalAlignment" Value="Center" />
+                            <Setter Property="FontSize" Value="16" />
+                        </Style>
+                    </TextBlock.Style>
+                </TextBlock>
+            </Grid>
+        </GroupBox>
 
+        <GroupBox Grid.Row="2" Header="Lumière">
+            <Grid>
+                <Button Background="{Binding Path=CouleurBouton}" Command="{Binding Path=CommandeAllumer, Mode=OneTime}">
+                    <Button.Style>
+                        <Style TargetType="Button">
+                            <Setter Property="VerticalAlignment" Value="Stretch" />
+                            <Setter Property="HorizontalAlignment" Value="Stretch" />
+                            <Setter Property="Margin" Value="50" />
+                        </Style>
+                    </Button.Style>
+                    <Button.Template>
+                        <ControlTemplate>
+                            <Ellipse Height="{TemplateBinding Height}"
+                                     Width="{TemplateBinding Width}"
+                                     Stroke="Black"
+                                     StrokeThickness="2"
+                                     Fill="{TemplateBinding Background}">
+                            </Ellipse>
+                        </ControlTemplate>
+                    </Button.Template>
+                </Button>
+
+                <ProgressBar Height="20" VerticalAlignment="Bottom" HorizontalAlignment="Stretch" IsIndeterminate="True">
+                    <ProgressBar.Visibility>
+                        <Binding Path="ActiviteEnCours" Mode="OneWay">
+                            <Binding.Converter>
+                                <BooleanToVisibilityConverter />
+                            </Binding.Converter>
+                        </Binding>
+                    </ProgressBar.Visibility>
+                </ProgressBar>
+            </Grid>
+        </GroupBox>
     </Grid>
 
 </Window>

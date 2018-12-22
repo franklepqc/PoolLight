@@ -25,8 +25,7 @@ namespace PoolLight.Wpf.ViewModels
         private bool _activiteEnCours = false;
         private bool _lumiereAllumee = false;
         private SolidColorBrush _couleurBouton = new SolidColorBrush(Colors.Black);
-        private float _temperatureEnCelcius = 60f;
-        private ModeTempEnum _modeTemperature = ModeTempEnum.Celcius;
+        private ModeTempEnum _modeTemperature = ModeTempEnum.Fahrenheit;
 
         #endregion Fields
 
@@ -77,12 +76,15 @@ namespace PoolLight.Wpf.ViewModels
         /// </summary>
         public float Temperature
         {
-            get => _convertirTemperature.Convertir(ModeTemperature, _temperatureEnCelcius);
-            set
-            {
-                _temperatureEnCelcius = value;
-                RaisePropertyChanged();
-            }
+            get => _convertirTemperature.Convertir(ModeTemperature, _clientApi.ObtenirTemperatureAsync().Result);
+        }
+
+        /// <summary>
+        /// pH.
+        /// </summary>
+        public float pH
+        {
+            get => _clientApi.ObtenirpH().Result;
         }
 
         /// <summary>
