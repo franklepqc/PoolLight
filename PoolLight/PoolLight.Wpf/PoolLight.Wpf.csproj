@@ -83,8 +83,10 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Clients\ClientApi.cs" />
-    <Compile Include="Clients\Interfaces\IClientApi.cs" />
+    <Compile Include="Clients\ClientGeneral.cs" />
+    <Compile Include="Clients\Interfaces\IClientLumiere.cs" />
+    <Compile Include="Clients\Interfaces\IClientPH.cs" />
+    <Compile Include="Clients\Interfaces\IClientTemperature.cs" />
     <Compile Include="Services\ConvertirTemperature.cs" />
     <Compile Include="Services\Interfaces\IConvertirTemperature.cs" />
     <Compile Include="ViewModels\MainWindowViewModel.cs" />

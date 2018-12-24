@@ -15,7 +15,9 @@ namespace PoolLight.Wpf.ViewModels
         /// <summary>
         /// Injections.
         /// </summary>
-        private readonly IClientApi _clientApi;
+        private readonly IClientLumiere _clientLumi;
+        private readonly IClientTemperature _clientTemp;
+        private readonly IClientPH _clientPh;
         private readonly IConvertirTemperature _convertirTemperature;
 
         /// <summary>
@@ -35,13 +37,16 @@ namespace PoolLight.Wpf.ViewModels
         /// <summary>
         /// Constructeur par défaut.
         /// </summary>
-        /// <param name="clientApi">Client d'API.</param>
-        public MainWindowViewModel(IClientApi clientApi, IConvertirTemperature convertirTemperature)
+        public MainWindowViewModel(IClientLumiere clientLumi, IClientTemperature clientTemp, IClientPH clientPh, IConvertirTemperature convertirTemperature)
         {
             CommandeAllumer = new Prism.Commands.DelegateCommand(Basculer, () => !ActiviteEnCours);
             CommandeModeTemperature = new Prism.Commands.DelegateCommand(BasculerTemperature);
             CommandeRafraichir = new Prism.Commands.DelegateCommand(Rafraichir, () => !ActiviteEnCours);
-            _clientApi = (clientApi ?? new ClientApi());
+
+            _clientLumi = clientLumi;
+            _clientTemp = clientTemp;
+            _clientPh = clientPh;
+
             _convertirTemperature = (convertirTemperature ?? new ConvertirTemperature());
 
             Rafraichir();
@@ -152,7 +157,7 @@ namespace PoolLight.Wpf.ViewModels
         /// <returns>Tâche.</returns>
         private async Task Allumer()
         {
-            if (await _clientApi.AllumerAsync())
+            if (await _clientLumi.AllumerAsync())
             {
                 CouleurBouton = new SolidColorBrush(Colors.Green);
                 _lumiereAllumee = true;
@@ -185,7 +190,7 @@ namespace PoolLight.Wpf.ViewModels
         /// <returns>Tâche.</returns>
         private async Task Eteindre()
         {
-            if (await _clientApi.EteindreAsync())
+            if (await _clientLumi.EteindreAsync())
             {
                 CouleurBouton = new SolidColorBrush(Colors.Black);
                 _lumiereAllumee = false;
@@ -217,8 +222,8 @@ namespace PoolLight.Wpf.ViewModels
         /// </summary>
         private async void Rafraichir()
         {
-            Temperature = await _clientApi.ObtenirTemperatureAsync();
-            pH = await _clientApi.ObtenirpH();
+            Temperature = await _clientTemp.Obtenir();
+            pH = await _clientPh.Obtenir();
         }
 
         #endregion Methods

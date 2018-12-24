@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Threading.Tasks;
+using PoolLight.Wpf.Clients.Interfaces;
 
 namespace PoolLight.Wpf.Clients
 {
     /// <summary>
     /// Implémentation de l'API pour le globe.
     /// </summary>
-    public class ClientApi : Interfaces.IClientApi
+    public class ClientGeneral : IClientTemperature, IClientPH, IClientLumiere
     {
         /// <summary>
         /// Allumer le globe.
@@ -28,14 +29,14 @@ namespace PoolLight.Wpf.Clients
         /// Obtenir la température.
         /// </summary>
         /// <returns></returns>
-        public Task<float> ObtenirTemperatureAsync() =>
+        Task<float> IClientTemperature.Obtenir() =>
             Task.FromResult(15.56f);
 
         /// <summary>
         /// Obtenir le pH.
         /// </summary>
         /// <returns></returns>
-        public Task<float> ObtenirpH() =>
+        Task<float> IClientPH.Obtenir() =>
             Task.FromResult(7f);
     }
 }
