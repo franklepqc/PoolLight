@@ -2,7 +2,6 @@
 using PoolLight.Wpf.Clients.Interfaces;
 using PoolLight.Wpf.Services;
 using PoolLight.Wpf.Services.Interfaces;
-using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using System.Windows.Media;
