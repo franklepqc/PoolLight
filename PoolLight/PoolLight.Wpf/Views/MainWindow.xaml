@@ -17,7 +17,7 @@
             <RowDefinition Height="200" />
         </Grid.RowDefinitions>
 
-        <GroupBox Header="Temperature" Grid.Row="0">
+        <GroupBox Header="Temperature" Grid.Row="0" IsEnabled="{Binding Path=RecuperationTemperatureCompletee, Mode=OneWay}">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="3*" />
@@ -44,7 +44,7 @@
             </Grid>
         </GroupBox>
 
-        <GroupBox Header="pH" Grid.Row="1">
+        <GroupBox Header="pH" Grid.Row="1" IsEnabled="{Binding Path=RecuperationPhCompletee, Mode=OneWay}">
             <Grid>
                 <TextBlock Name="pH" Text="{Binding Path=pH, Mode=OneWay}">
                     <TextBlock.Style>

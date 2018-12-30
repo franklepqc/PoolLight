@@ -1,5 +1,4 @@
-﻿using PoolLight.Wpf.Clients;
-using PoolLight.Wpf.Clients.Interfaces;
+﻿using PoolLight.Wpf.Clients.Interfaces;
 using PoolLight.Wpf.Services;
 using PoolLight.Wpf.Services.Interfaces;
 using System.Threading.Tasks;
@@ -23,7 +22,9 @@ namespace PoolLight.Wpf.ViewModels
         /// <summary>
         /// Champs.
         /// </summary>
-        private bool _activiteEnCours = false;
+        private bool _activiteEnCours = false, 
+                     _recupTempCompletee = false, 
+                     _recupPhCompletee = false;
         private bool _lumiereAllumee = false;
         private float _temperatureEnCelcius;
         private float _pH;
@@ -66,6 +67,34 @@ namespace PoolLight.Wpf.ViewModels
             set
             {
                 _activiteEnCours = value;
+                RaisePropertyChanged();
+            }
+        }
+
+        /// <summary>
+        /// Activité de la récupération de la température en cours.
+        /// Savoir si la demande est acheminée.
+        /// </summary>
+        public bool RecuperationTemperatureCompletee
+        {
+            get { return _recupTempCompletee; }
+            set
+            {
+                _recupTempCompletee = value;
+                RaisePropertyChanged();
+            }
+        }
+
+        /// <summary>
+        /// Activité de la récupération du pH en cours.
+        /// Savoir si la demande est acheminée.
+        /// </summary>
+        public bool RecuperationPhCompletee
+        {
+            get { return _recupPhCompletee; }
+            set
+            {
+                _recupPhCompletee = value;
                 RaisePropertyChanged();
             }
         }
@@ -220,10 +249,30 @@ namespace PoolLight.Wpf.ViewModels
         /// <summary>
         /// Rafraichir les valeurs.
         /// </summary>
-        private async void Rafraichir()
+        private void Rafraichir()
         {
+            RecupererTemp();
+            RecupererPh();
+        }
+
+        /// <summary>
+        /// Récupération de la température.
+        /// </summary>
+        private async void RecupererTemp()
+        {
+            RecuperationTemperatureCompletee = false;
             Temperature = await _clientTemp.Obtenir();
+            RecuperationTemperatureCompletee = true;
+        }
+
+        /// <summary>
+        /// Récupération du pH.
+        /// </summary>
+        private async void RecupererPh()
+        {
+            RecuperationPhCompletee = false;
             pH = await _clientPh.Obtenir();
+            RecuperationPhCompletee = true;
         }
 
         #endregion Methods
