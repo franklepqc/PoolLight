@@ -1,23 +1,62 @@
 ﻿<Window x:Class="PoolLight.Wpf.Views.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:PoolLight.Wpf"
         xmlns:prism="http://prismlibrary.com/"
-        mc:Ignorable="d"
         Height="400" Width="200"
         ResizeMode="NoResize"
         prism:ViewModelLocator.AutoWireViewModel="True"
         Title="PoolLight">
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="*" />
-            <RowDefinition Height="*" />
             <RowDefinition Height="200" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
-        <GroupBox Header="Temperature" Grid.Row="0" IsEnabled="{Binding Path=RecuperationTemperatureCompletee, Mode=OneWay}">
+        <GroupBox Grid.Row="0" Header="Lumière">
+            <Grid>
+                <ToggleButton Command="{Binding Path=CommandeAllumer, Mode=OneTime}">
+                    <ToggleButton.Style>
+                        <Style TargetType="ToggleButton">
+                            <Setter Property="VerticalAlignment" Value="Stretch" />
+                            <Setter Property="HorizontalAlignment" Value="Stretch" />
+                            <Setter Property="Margin" Value="50" />
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding Path=LumiereAllumee, Mode=OneWay}" Value="True">
+                                    <Setter Property="Background" Value="Green" />
+                                </DataTrigger>
+
+                                <DataTrigger Binding="{Binding Path=LumiereAllumee, Mode=OneWay}" Value="False">
+                                    <Setter Property="Background" Value="Black" />
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </ToggleButton.Style>
+                    <ToggleButton.Template>
+                        <ControlTemplate>
+                            <Ellipse Height="{TemplateBinding Height}"
+                                     Width="{TemplateBinding Width}"
+                                     Stroke="Black"
+                                     StrokeThickness="2"
+                                     Fill="{TemplateBinding Background}">
+                            </Ellipse>
+                        </ControlTemplate>
+                    </ToggleButton.Template>
+                </ToggleButton>
+
+                <ProgressBar Height="20" VerticalAlignment="Bottom" HorizontalAlignment="Stretch" IsIndeterminate="True">
+                    <ProgressBar.Visibility>
+                        <Binding Path="ActiviteEnCours" Mode="OneWay">
+                            <Binding.Converter>
+                                <BooleanToVisibilityConverter />
+                            </Binding.Converter>
+                        </Binding>
+                    </ProgressBar.Visibility>
+                </ProgressBar>
+            </Grid>
+        </GroupBox>
+
+        <GroupBox Header="Température" Grid.Row="1" IsEnabled="{Binding Path=RecuperationTemperatureCompletee, Mode=OneWay}">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="3*" />
@@ -52,7 +91,7 @@
             </Grid>
         </GroupBox>
 
-        <GroupBox Header="pH" Grid.Row="1" IsEnabled="{Binding Path=RecuperationPhCompletee, Mode=OneWay}">
+        <GroupBox Header="pH" Grid.Row="2" IsEnabled="{Binding Path=RecuperationPhCompletee, Mode=OneWay}">
             <Grid>
                 <TextBlock Name="pH" Text="{Binding Path=pH, Mode=OneWay}">
                     <TextBlock.Style>
@@ -71,40 +110,6 @@
                         </Style>
                     </TextBlock.Style>
                 </TextBlock>
-            </Grid>
-        </GroupBox>
-
-        <GroupBox Grid.Row="2" Header="Lumière">
-            <Grid>
-                <Button Background="{Binding Path=CouleurBouton}" Command="{Binding Path=CommandeAllumer, Mode=OneTime}">
-                    <Button.Style>
-                        <Style TargetType="Button">
-                            <Setter Property="VerticalAlignment" Value="Stretch" />
-                            <Setter Property="HorizontalAlignment" Value="Stretch" />
-                            <Setter Property="Margin" Value="50" />
-                        </Style>
-                    </Button.Style>
-                    <Button.Template>
-                        <ControlTemplate>
-                            <Ellipse Height="{TemplateBinding Height}"
-                                     Width="{TemplateBinding Width}"
-                                     Stroke="Black"
-                                     StrokeThickness="2"
-                                     Fill="{TemplateBinding Background}">
-                            </Ellipse>
-                        </ControlTemplate>
-                    </Button.Template>
-                </Button>
-
-                <ProgressBar Height="20" VerticalAlignment="Bottom" HorizontalAlignment="Stretch" IsIndeterminate="True">
-                    <ProgressBar.Visibility>
-                        <Binding Path="ActiviteEnCours" Mode="OneWay">
-                            <Binding.Converter>
-                                <BooleanToVisibilityConverter />
-                            </Binding.Converter>
-                        </Binding>
-                    </ProgressBar.Visibility>
-                </ProgressBar>
             </Grid>
         </GroupBox>
     </Grid>

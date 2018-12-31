@@ -1,9 +1,7 @@
 ﻿using PoolLight.Wpf.Clients.Interfaces;
-using PoolLight.Wpf.Services;
 using PoolLight.Wpf.Services.Interfaces;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using System.Windows.Media;
 
 namespace PoolLight.Wpf.ViewModels
 {
@@ -28,7 +26,6 @@ namespace PoolLight.Wpf.ViewModels
         private bool _lumiereAllumee = false;
         private float _temperatureEnCelcius;
         private float _pH;
-        private SolidColorBrush _couleurBouton = new SolidColorBrush(Colors.Black);
         private ModeTempEnum _modeTemperature = ModeTempEnum.Fahrenheit;
 
         #endregion Fields
@@ -40,15 +37,16 @@ namespace PoolLight.Wpf.ViewModels
         /// </summary>
         public MainWindowViewModel(IClientLumiere clientLumi, IClientTemperature clientTemp, IClientPH clientPh, IConvertirTemperature convertirTemperature)
         {
+            // Commandes.
             CommandeAllumer = new Prism.Commands.DelegateCommand(Basculer, () => !ActiviteEnCours);
             CommandeModeTemperature = new Prism.Commands.DelegateCommand(BasculerTemperature);
             CommandeRafraichir = new Prism.Commands.DelegateCommand(Rafraichir, () => !ActiviteEnCours);
 
+            // Injection.
             _clientLumi = clientLumi;
             _clientTemp = clientTemp;
             _clientPh = clientPh;
-
-            _convertirTemperature = (convertirTemperature ?? new ConvertirTemperature());
+            _convertirTemperature = convertirTemperature;
 
             Rafraichir();
         }
@@ -141,19 +139,6 @@ namespace PoolLight.Wpf.ViewModels
         }
 
         /// <summary>
-        /// Couleur du bouton.
-        /// </summary>
-        public SolidColorBrush CouleurBouton
-        {
-            get { return _couleurBouton; }
-            set
-            {
-                _couleurBouton = value;
-                RaisePropertyChanged();
-            }
-        }
-
-        /// <summary>
         /// Mode de temperature.
         /// </summary>
         public ModeTempEnum ModeTemperature
@@ -176,6 +161,19 @@ namespace PoolLight.Wpf.ViewModels
             get => (ModeTemperature == ModeTempEnum.Celcius ? "°C" : (ModeTemperature == ModeTempEnum.Fahrenheit ? "°F" : "K"));
         }
 
+        /// <summary>
+        /// Indicateur si la lumière est allumée.
+        /// </summary>
+        public bool LumiereAllumee
+        {
+            get => _lumiereAllumee;
+            set
+            {
+                _lumiereAllumee = value;
+                RaisePropertyChanged();
+            }
+        }
+
         #endregion Properties
 
         #region Methods
@@ -188,8 +186,7 @@ namespace PoolLight.Wpf.ViewModels
         {
             if (await _clientLumi.AllumerAsync())
             {
-                CouleurBouton = new SolidColorBrush(Colors.Green);
-                _lumiereAllumee = true;
+                LumiereAllumee = true;
             }
         }
 
@@ -201,7 +198,7 @@ namespace PoolLight.Wpf.ViewModels
         {
             ActiviteEnCours = true;
 
-            if (_lumiereAllumee)
+            if (LumiereAllumee)
             {
                 await Eteindre();
             }
@@ -221,8 +218,7 @@ namespace PoolLight.Wpf.ViewModels
         {
             if (await _clientLumi.EteindreAsync())
             {
-                CouleurBouton = new SolidColorBrush(Colors.Black);
-                _lumiereAllumee = false;
+                LumiereAllumee = false;
             }
         }
 

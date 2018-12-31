@@ -30,7 +30,7 @@ namespace PoolLight.Wpf.Clients
         /// </summary>
         /// <returns></returns>
         Task<float> IClientTemperature.Obtenir() =>
-            Task.FromResult(15.56f);
+            Task.FromResult(21.11111111111111f);
 
         /// <summary>
         /// Obtenir le pH.
