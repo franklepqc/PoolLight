@@ -6,6 +6,9 @@
         ResizeMode="NoResize"
         prism:ViewModelLocator.AutoWireViewModel="True"
         Title="PoolLight">
+    <Window.InputBindings>
+        <KeyBinding Key="F5" Command="{Binding Path=CommandeRafraichir, Mode=OneWay}" />
+    </Window.InputBindings>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="200" />
@@ -15,9 +18,9 @@
 
         <GroupBox Grid.Row="0" Header="Lumière">
             <Grid>
-                <ToggleButton Command="{Binding Path=CommandeAllumer, Mode=OneTime}">
-                    <ToggleButton.Style>
-                        <Style TargetType="ToggleButton">
+                <Button Command="{Binding Path=CommandeAllumer, Mode=OneWay}">
+                    <Button.Style>
+                        <Style TargetType="Button">
                             <Setter Property="VerticalAlignment" Value="Stretch" />
                             <Setter Property="HorizontalAlignment" Value="Stretch" />
                             <Setter Property="Margin" Value="50" />
@@ -31,8 +34,8 @@
                                 </DataTrigger>
                             </Style.Triggers>
                         </Style>
-                    </ToggleButton.Style>
-                    <ToggleButton.Template>
+                    </Button.Style>
+                    <Button.Template>
                         <ControlTemplate>
                             <Ellipse Height="{TemplateBinding Height}"
                                      Width="{TemplateBinding Width}"
@@ -41,8 +44,8 @@
                                      Fill="{TemplateBinding Background}">
                             </Ellipse>
                         </ControlTemplate>
-                    </ToggleButton.Template>
-                </ToggleButton>
+                    </Button.Template>
+                </Button>
 
                 <ProgressBar Height="20" VerticalAlignment="Bottom" HorizontalAlignment="Stretch" IsIndeterminate="True">
                     <ProgressBar.Visibility>

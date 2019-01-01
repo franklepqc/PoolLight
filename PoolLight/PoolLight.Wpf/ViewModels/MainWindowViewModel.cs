@@ -21,8 +21,8 @@ namespace PoolLight.Wpf.ViewModels
         /// Champs.
         /// </summary>
         private bool _activiteEnCours = false, 
-                     _recupTempCompletee = false, 
-                     _recupPhCompletee = false;
+                     _recupTempCompletee = true, 
+                     _recupPhCompletee = true;
         private bool _lumiereAllumee = false;
         private float? _temperatureEnCelcius;
         private float? _pH;
@@ -40,7 +40,7 @@ namespace PoolLight.Wpf.ViewModels
             // Commandes.
             CommandeAllumer = new Prism.Commands.DelegateCommand(Basculer, () => !ActiviteEnCours);
             CommandeModeTemperature = new Prism.Commands.DelegateCommand(BasculerTemperature);
-            CommandeRafraichir = new Prism.Commands.DelegateCommand(Rafraichir, () => !ActiviteEnCours);
+            CommandeRafraichir = new Prism.Commands.DelegateCommand(Rafraichir, () => !ActiviteEnCours && RecuperationTemperatureCompletee && RecuperationPhCompletee);
 
             // Injection.
             _clientLumi = clientLumi;
@@ -66,6 +66,10 @@ namespace PoolLight.Wpf.ViewModels
             {
                 _activiteEnCours = value;
                 RaisePropertyChanged();
+
+                // Rafraichir l'exécution des commandes.
+                (CommandeAllumer as Prism.Commands.DelegateCommand).RaiseCanExecuteChanged();
+                (CommandeRafraichir as Prism.Commands.DelegateCommand).RaiseCanExecuteChanged();
             }
         }
 
@@ -80,6 +84,9 @@ namespace PoolLight.Wpf.ViewModels
             {
                 _recupTempCompletee = value;
                 RaisePropertyChanged();
+                
+                // Rafraichir l'exécution des commandes.
+                (CommandeRafraichir as Prism.Commands.DelegateCommand).RaiseCanExecuteChanged();
             }
         }
 
@@ -94,6 +101,9 @@ namespace PoolLight.Wpf.ViewModels
             {
                 _recupPhCompletee = value;
                 RaisePropertyChanged();
+
+                // Rafraichir l'exécution des commandes.
+                (CommandeRafraichir as Prism.Commands.DelegateCommand).RaiseCanExecuteChanged();
             }
         }
 
@@ -255,8 +265,19 @@ namespace PoolLight.Wpf.ViewModels
         /// </summary>
         private void Rafraichir()
         {
+            RecupererEstAllumee();
             RecupererTemp();
             RecupererPh();
+        }
+
+        /// <summary>
+        /// Récupération si la lumière est allumée.
+        /// </summary>
+        private async void RecupererEstAllumee()
+        {
+            ActiviteEnCours = true;
+            LumiereAllumee = await _clientLumi.EstAllumeeAsync();
+            ActiviteEnCours = false;
         }
 
         /// <summary>
