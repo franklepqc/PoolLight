@@ -24,8 +24,8 @@ namespace PoolLight.Wpf.ViewModels
                      _recupTempCompletee = false, 
                      _recupPhCompletee = false;
         private bool _lumiereAllumee = false;
-        private float _temperatureEnCelcius;
-        private float _pH;
+        private float? _temperatureEnCelcius;
+        private float? _pH;
         private ModeTempEnum _modeTemperature = ModeTempEnum.Fahrenheit;
 
         #endregion Fields
@@ -115,9 +115,17 @@ namespace PoolLight.Wpf.ViewModels
         /// <summary>
         /// Température.
         /// </summary>
-        public float Temperature
+        public float? Temperature
         {
-            get => _convertirTemperature.Convertir(ModeTemperature, _temperatureEnCelcius);
+            get
+            {
+                if (_temperatureEnCelcius.HasValue)
+                {
+                    return _convertirTemperature.Convertir(ModeTemperature, _temperatureEnCelcius.Value);
+                }
+
+                return default(float?);
+            }
             set
             {
                 _temperatureEnCelcius = value;
@@ -128,7 +136,7 @@ namespace PoolLight.Wpf.ViewModels
         /// <summary>
         /// pH.
         /// </summary>
-        public float pH
+        public float? pH
         {
             get => _pH;
             set
