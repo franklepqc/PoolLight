@@ -66,7 +66,7 @@
                     <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
 
-                <TextBlock Name="temperature" Grid.Column="0" Text="{Binding Path=Temperature, Mode=OneWay}">
+                <TextBlock Name="temperature" Grid.Column="0" Text="{Binding Path=Temperature, Mode=OneWay}" ToolTip="{Binding Path=InfosDates, Mode=OneWay}">
                     <TextBlock.Style>
                         <Style TargetType="TextBlock">
                             <Setter Property="VerticalAlignment" Value="Center" />
@@ -94,7 +94,7 @@
             </Grid>
         </GroupBox>
 
-        <GroupBox Header="pH" Grid.Row="2" IsEnabled="{Binding Path=RecuperationPhCompletee, Mode=OneWay}">
+        <GroupBox Header="pH" Grid.Row="2" IsEnabled="{Binding Path=RecuperationPhCompletee, Mode=OneWay}" ToolTip="{Binding Path=InfosDates, Mode=OneWay}">
             <Grid>
                 <TextBlock Name="pH" Text="{Binding Path=pH, Mode=OneWay}">
                     <TextBlock.Style>

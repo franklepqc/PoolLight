@@ -2,10 +2,8 @@
 
 namespace PoolLight.Wpf.Clients.Interfaces
 {
-    public interface IClientLumiere
+    public interface IGestionLumiere
     {
-        Task<bool> EstAllumeeAsync();
-
         Task<bool> AllumerAsync();
 
         Task<bool> EteindreAsync();

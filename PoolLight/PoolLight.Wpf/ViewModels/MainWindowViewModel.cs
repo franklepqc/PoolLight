@@ -12,9 +12,8 @@ namespace PoolLight.Wpf.ViewModels
         /// <summary>
         /// Injections.
         /// </summary>
-        private readonly IClientLumiere _clientLumi;
-        private readonly IClientTemperature _clientTemp;
-        private readonly IClientPH _clientPh;
+        private readonly IGestionLumiere _clientLumi;
+        private readonly IClientInfosEau _clientInfosEau;
         private readonly IConvertirTemperature _convertirTemperature;
 
         /// <summary>
@@ -26,6 +25,8 @@ namespace PoolLight.Wpf.ViewModels
         private bool _lumiereAllumee = false;
         private float? _temperatureEnCelcius;
         private float? _pH;
+        private System.DateTime? _dateRecuperation;
+        private System.DateTime? _dateDernierEnregistrement;
         private ModeTempEnum _modeTemperature = ModeTempEnum.Fahrenheit;
 
         #endregion Fields
@@ -35,7 +36,7 @@ namespace PoolLight.Wpf.ViewModels
         /// <summary>
         /// Constructeur par défaut.
         /// </summary>
-        public MainWindowViewModel(IClientLumiere clientLumi, IClientTemperature clientTemp, IClientPH clientPh, IConvertirTemperature convertirTemperature)
+        public MainWindowViewModel(IGestionLumiere clientLumi, IClientInfosEau clientInfosEau, IConvertirTemperature convertirTemperature)
         {
             // Commandes.
             CommandeAllumer = new Prism.Commands.DelegateCommand(Basculer, () => !ActiviteEnCours);
@@ -44,8 +45,7 @@ namespace PoolLight.Wpf.ViewModels
 
             // Injection.
             _clientLumi = clientLumi;
-            _clientTemp = clientTemp;
-            _clientPh = clientPh;
+            _clientInfosEau = clientInfosEau;
             _convertirTemperature = convertirTemperature;
 
             Rafraichir();
@@ -192,6 +192,16 @@ namespace PoolLight.Wpf.ViewModels
             }
         }
 
+        /// <summary>
+        /// Obtenir les dernières informations concernant les enregistrements.
+        /// </summary>
+        public string InfosDates
+        {
+            get => (_dateDernierEnregistrement.HasValue && _dateRecuperation.HasValue ? 
+                $"Dernière demande {_dateRecuperation.Value:d}{System.Environment.NewLine}Dernière mise à jour {_dateDernierEnregistrement.Value:d}" : 
+                default(string));
+        }
+
         #endregion Properties
 
         #region Methods
@@ -266,38 +276,33 @@ namespace PoolLight.Wpf.ViewModels
         private void Rafraichir()
         {
             RecupererEstAllumee();
-            RecupererTemp();
-            RecupererPh();
+            RecupererInfosEau();
         }
 
         /// <summary>
         /// Récupération si la lumière est allumée.
         /// </summary>
-        private async void RecupererEstAllumee()
+        private void RecupererEstAllumee()
         {
             ActiviteEnCours = true;
-            LumiereAllumee = await _clientLumi.EstAllumeeAsync();
+            //LumiereAllumee = await _clientLumi.EstAllumeeAsync();
             ActiviteEnCours = false;
         }
 
         /// <summary>
-        /// Récupération de la température.
+        /// Récupération de la température et du pH.
         /// </summary>
-        private async void RecupererTemp()
+        private async void RecupererInfosEau()
         {
-            RecuperationTemperatureCompletee = false;
-            Temperature = await _clientTemp.Obtenir();
-            RecuperationTemperatureCompletee = true;
-        }
+            _dateRecuperation = System.DateTime.Now;
 
-        /// <summary>
-        /// Récupération du pH.
-        /// </summary>
-        private async void RecupererPh()
-        {
-            RecuperationPhCompletee = false;
-            pH = await _clientPh.Obtenir();
-            RecuperationPhCompletee = true;
+            var infos = await _clientInfosEau.Obtenir();
+
+            Temperature = infos.Temperature;
+            pH = infos.PH;
+            _dateDernierEnregistrement = infos.DateDerniereMAJ;
+
+            RaisePropertyChanged(nameof(InfosDates));
         }
 
         #endregion Methods

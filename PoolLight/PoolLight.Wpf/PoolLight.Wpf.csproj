@@ -84,11 +84,16 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Clients\ClientGeneral.cs" />
-    <Compile Include="Clients\Interfaces\IClientLumiere.cs" />
-    <Compile Include="Clients\Interfaces\IClientPH.cs" />
-    <Compile Include="Clients\Interfaces\IClientTemperature.cs" />
+    <Compile Include="Clients\ClientInfosEau.cs" />
+    <Compile Include="Clients\InfosEau.cs" />
+    <Compile Include="Clients\Interfaces\IInfosEau.cs" />
+    <Compile Include="Clients\Interfaces\IClientInfosEau.cs" />
+    <Compile Include="Clients\Interfaces\IGestionLumiere.cs" />
     <Compile Include="Services\ConvertirTemperature.cs" />
     <Compile Include="Services\Interfaces\IConvertirTemperature.cs" />
+    <Compile Include="Services\Interfaces\IRecuperationPh.cs" />
+    <Compile Include="Services\Interfaces\IRecuperationTemperature.cs" />
+    <Compile Include="Services\RecupInfosIoTHub.cs" />
     <Compile Include="ViewModels\MainWindowViewModel.cs" />
     <Compile Include="Views\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
