@@ -52,7 +52,7 @@ namespace PoolLight.Wpf.Clients
                 {
                     Temperature = json.temperature,
                     PH = json.pH,
-                    DateDerniereMAJ = DateTime.Now
+                    DateDerniereMAJ = (DateTime)message.SystemProperties["iothub-enqueuedtime"]
                 };
             }
 
