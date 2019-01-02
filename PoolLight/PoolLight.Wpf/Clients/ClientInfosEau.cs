@@ -29,18 +29,26 @@ namespace PoolLight.Wpf.Clients
         /// <returns>Infos.</returns>
         public async Task<IInfosEau> Obtenir()
         {
+            // Valeur de retour.
+            var retour = default(IInfosEau);
+
+            // Configuration du récepteur.
             var receiver = _hubClient.CreateReceiver("$Default", "0", EventPosition.FromEnqueuedTime(DateTime.Now));
 
+            // Récupération des messages.
             var messages = await receiver.ReceiveAsync(100);
 
+            // S'il y en a, prendre le dernier (plus à jour).
             if (messages.Any())
             {
                 var message = messages.Last();
 
+                // Conversion.
                 string data = Encoding.UTF8.GetString(message.Body.Array);
                 dynamic json = JsonConvert.DeserializeObject(data);
 
-                return new InfosEau
+                // Assignation des nouvelles valeurs.
+                retour = new InfosEau
                 {
                     Temperature = json.temperature,
                     PH = json.pH,
@@ -48,7 +56,10 @@ namespace PoolLight.Wpf.Clients
                 };
             }
 
-            return null;
+            // Fermeture du récepteur.
+            await receiver.CloseAsync();
+
+            return retour;
         }
     }
 }
