@@ -1,6 +1,9 @@
-﻿using PoolLight.Wpf.Clients.Interfaces;
-using PoolLight.Wpf.Services.Interfaces;
+﻿using Microsoft.Azure.EventHubs;
+using Newtonsoft.Json;
+using PoolLight.Wpf.Clients.Interfaces;
 using System;
+using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace PoolLight.Wpf.Clients
@@ -11,32 +14,41 @@ namespace PoolLight.Wpf.Clients
     public class ClientInfosEau : IClientInfosEau
     {
         /// <summary>
-        /// Champs.
+        /// Chaine de connexion pour le client IoTHub.
         /// </summary>
-        private readonly IRecuperationTemperature _recuperationTemperature;
-        private readonly IRecuperationPh _recuperationPh;
+        private static readonly string CHAINE_CONNEXION = @"Endpoint=sb://ihsuprodyqres009dednamespace.servicebus.windows.net/;SharedAccessKeyName=iothubowner;SharedAccessKey=49MD9svPNWp07nvrAny0m2AtuTKsOqQPk76IOSRyepM=;EntityPath=iothub-ehub-poollight-1115586-a043f4f0aa";
 
         /// <summary>
-        /// Constructeur par injection.
+        /// Client pour IotHub.
         /// </summary>
-        /// <param name="recuperationTemperature">Injection du service de récupération de la température.</param>
-        /// <param name="recuperationPh">Injection du service de récupération du pH.</param>
-        public ClientInfosEau(IRecuperationTemperature recuperationTemperature, IRecuperationPh recuperationPh)
-        {
-            _recuperationTemperature = recuperationTemperature;
-            _recuperationPh = recuperationPh;
-        }
+        private readonly EventHubClient _hubClient = EventHubClient.CreateFromConnectionString(CHAINE_CONNEXION);
 
         /// <summary>
         /// Obtention des informations de l'eau.
         /// </summary>
         /// <returns>Infos.</returns>
-        public async Task<IInfosEau> Obtenir() =>
-            new InfosEau
+        public async Task<IInfosEau> Obtenir()
+        {
+            var receiver = _hubClient.CreateReceiver("$Default", "0", EventPosition.FromEnqueuedTime(DateTime.Now));
+
+            var messages = await receiver.ReceiveAsync(100);
+
+            if (messages.Any())
             {
-                Temperature = await _recuperationTemperature.Obtenir(),
-                PH = await _recuperationPh.Obtenir(),
-                DateDerniereMAJ = DateTime.Now
-            };
+                var message = messages.Last();
+
+                string data = Encoding.UTF8.GetString(message.Body.Array);
+                dynamic json = JsonConvert.DeserializeObject(data);
+
+                return new InfosEau
+                {
+                    Temperature = json.temperature,
+                    PH = json.pH,
+                    DateDerniereMAJ = DateTime.Now
+                };
+            }
+
+            return null;
+        }
     }
 }

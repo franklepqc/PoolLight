@@ -16,10 +16,8 @@ namespace PoolLight.Wpf
     {
         protected override void RegisterTypes(IContainerRegistry containerRegistry)
         {
-            containerRegistry.RegisterSingleton<IRecuperationTemperature, RecupInfosIoTHub>();
-            containerRegistry.RegisterSingleton<IRecuperationPh, RecupInfosIoTHub>();
             containerRegistry.Register<IGestionLumiere, ClientGeneral>();
-            containerRegistry.Register<IClientInfosEau, ClientInfosEau>();
+            containerRegistry.RegisterSingleton<IClientInfosEau, ClientInfosEau>();
             containerRegistry.Register<IConvertirTemperature, ConvertirTemperature>();
         }
 
