@@ -33,13 +33,13 @@ namespace PoolLight.Wpf.Clients
             var retour = default(IInfosEau);
 
             // Configuration du récepteur.
-            var receiver = _hubClient.CreateReceiver("$Default", "0", EventPosition.FromEnqueuedTime(DateTime.Now));
+            var receiver = _hubClient.CreateReceiver("$Default", "0", EventPosition.FromEnqueuedTime(DateTime.Now.AddSeconds(-5d)));
 
             // Récupération des messages.
             var messages = await receiver.ReceiveAsync(100);
 
             // S'il y en a, prendre le dernier (plus à jour).
-            if (messages.Any())
+            if (messages != null && messages.Any())
             {
                 var message = messages.Last();
 
