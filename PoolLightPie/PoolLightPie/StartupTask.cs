@@ -26,7 +26,7 @@ namespace PoolLightPie
                 Console.WriteLine($"Température à {DateTime.Now}: {temperature}");
 
                 // Envoi.
-                //serviceEnvoiCloud.Envoyer(temperature);
+                serviceEnvoiCloud.Envoyer(temperature);
 
                 // Faire dormir le processus pour 15 minutes.
                 Task.Delay(Convert.ToInt32(TimeSpan.FromMinutes(15d).TotalMilliseconds)).Wait();
