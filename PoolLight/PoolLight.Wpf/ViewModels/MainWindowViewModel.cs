@@ -298,11 +298,14 @@ namespace PoolLight.Wpf.ViewModels
 
             var infos = await _clientInfosEau.Obtenir();
 
-            Temperature = infos.Temperature;
-            pH = infos.PH;
-            _dateDernierEnregistrement = infos.DateDerniereMAJ;
+            if (infos != null)
+            {
+                Temperature = infos.Temperature;
+                pH = infos.PH;
+                _dateDernierEnregistrement = infos.DateDerniereMAJ;
 
-            RaisePropertyChanged(nameof(InfosDates));
+                RaisePropertyChanged(nameof(InfosDates));
+            }
         }
 
         #endregion Methods
