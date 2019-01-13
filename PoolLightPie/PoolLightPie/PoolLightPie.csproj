@@ -97,7 +97,10 @@
   <ItemGroup>
     <Compile Include="Services\EnvoiCloud.cs" />
     <Compile Include="Services\Interfaces\IEnvoiCloud.cs" />
+    <Compile Include="Services\Interfaces\IServiceLecture.cs" />
+    <Compile Include="Services\Interfaces\IServiceLecturePh.cs" />
     <Compile Include="Services\Interfaces\IServiceLectureTemperature.cs" />
+    <Compile Include="Services\LecturePh.cs" />
     <Compile Include="Services\LectureTemperature.cs" />
     <Compile Include="StartupTask.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

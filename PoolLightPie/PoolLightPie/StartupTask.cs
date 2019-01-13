@@ -11,25 +11,29 @@ namespace PoolLightPie
         /// Envoie des métriques pour l'application.
         /// </summary>
         /// <param name="taskInstance">Instance d'exécution.</param>
-        public async void Run(IBackgroundTaskInstance taskInstance)
+        public void Run(IBackgroundTaskInstance taskInstance)
         {
             // Services.
             var serviceEnvoiCloud = new EnvoiCloud();
             var serviceLectureThermometre = new LectureTemperature();
-            
+            var serviceLecturePh = new LecturePh();
+
             while (true)
             {
                 // Récupération de la température.
                 var temperature = serviceLectureThermometre.Lire();
+                var pH = serviceLecturePh.Lire();
 
                 // Logging.
-                Console.WriteLine($"Température à {DateTime.Now}: {temperature}");
+                var maintenant = DateTime.Now;
+                Console.WriteLine($"Température à {maintenant}: {temperature}");
+                Console.WriteLine($"pH à {maintenant}: {pH}");
 
                 // Envoi.
                 var differe = taskInstance.GetDeferral();
 
                 // Appel.
-                serviceEnvoiCloud.Envoyer(temperature);
+                serviceEnvoiCloud.Envoyer(temperature, pH);
 
                 // Finition.
                 differe.Complete();

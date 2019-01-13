@@ -23,13 +23,15 @@ namespace PoolLightPie.Services
         /// Envoyer la température.
         /// </summary>
         /// <param name="temperature">Température.</param>
+        /// <param name="pH">pH.</param>
         /// <returns>Tâche.</returns>
-        public async void Envoyer(float temperature)
+        public async void Envoyer(float temperature, float pH)
         {
             // Créer le message en Json.
             var messageJson = new
             {
-                temperature
+                temperature,
+                pH
             };
 
             // Formatter.

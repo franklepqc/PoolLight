@@ -1,7 +1,6 @@
 ﻿namespace PoolLightPie.Services.Interfaces
 {
-    public interface IServiceLectureTemperature
+    public interface IServiceLectureTemperature : IServiceLecture
     {
-        float Lire();
     }
 }
