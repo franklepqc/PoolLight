@@ -23,8 +23,8 @@ namespace PoolLight.Wpf.ViewModels
                      _recupTempCompletee = true, 
                      _recupPhCompletee = true;
         private bool _lumiereAllumee = false;
-        private float? _temperatureEnCelcius;
-        private float? _pH;
+        private float? _temperatureEnCelcius = new float?();
+        private float? _pH = new float?();
         private System.DateTime? _dateRecuperation;
         private System.DateTime? _dateDernierEnregistrement;
         private ModeTempEnum _modeTemperature = ModeTempEnum.Fahrenheit;
@@ -40,7 +40,7 @@ namespace PoolLight.Wpf.ViewModels
         {
             // Commandes.
             CommandeAllumer = new Prism.Commands.DelegateCommand(Basculer, () => !ActiviteEnCours);
-            CommandeModeTemperature = new Prism.Commands.DelegateCommand(BasculerTemperature);
+            CommandeModeTemperature = new Prism.Commands.DelegateCommand(BasculerTemperature, () => Temperature.HasValue);
             CommandeRafraichir = new Prism.Commands.DelegateCommand(Rafraichir, () => !ActiviteEnCours && RecuperationTemperatureCompletee && RecuperationPhCompletee);
 
             // Injection.
@@ -140,6 +140,7 @@ namespace PoolLight.Wpf.ViewModels
             {
                 _temperatureEnCelcius = value;
                 RaisePropertyChanged();
+                (CommandeModeTemperature as Prism.Commands.DelegateCommand).RaiseCanExecuteChanged();
             }
         }
 

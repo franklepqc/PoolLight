@@ -1,8 +1,6 @@
 ﻿using Microsoft.Azure.Devices.Client;
 using Newtonsoft.Json;
-using System;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace PoolLightPie.Services
 {
@@ -14,7 +12,7 @@ namespace PoolLightPie.Services
         /// <summary>
         /// Chaîne de connexion au Cloud.
         /// </summary>
-        private readonly static string _chaineConnexion = string.Empty;
+        private readonly static string _chaineConnexion = "HostName=PoolLight.azure-devices.net;DeviceId=Appareil1;SharedAccessKey=XRP0yav/9obOYpn5D+R2ME7Pgfcut4xLQquOu9nhrrM=";
         
         /// <summary>
         /// Client.

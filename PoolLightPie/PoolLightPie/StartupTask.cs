@@ -35,7 +35,7 @@ namespace PoolLightPie
                 differe.Complete();
 
                 // Faire dormir le processus pour 15 minutes.
-                Task.Delay(Convert.ToInt32(TimeSpan.FromSeconds(15d).TotalMilliseconds)).Wait();
+                Task.Delay(Convert.ToInt32(TimeSpan.FromMinutes(15d).TotalMilliseconds)).Wait();
             }
         }
     }
