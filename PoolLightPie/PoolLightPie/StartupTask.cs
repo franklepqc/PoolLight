@@ -11,7 +11,7 @@ namespace PoolLightPie
         /// Envoie des métriques pour l'application.
         /// </summary>
         /// <param name="taskInstance">Instance d'exécution.</param>
-        public void Run(IBackgroundTaskInstance taskInstance)
+        public async void Run(IBackgroundTaskInstance taskInstance)
         {
             // Services.
             var serviceEnvoiCloud = new EnvoiCloud();
@@ -26,10 +26,16 @@ namespace PoolLightPie
                 Console.WriteLine($"Température à {DateTime.Now}: {temperature}");
 
                 // Envoi.
+                var differe = taskInstance.GetDeferral();
+
+                // Appel.
                 serviceEnvoiCloud.Envoyer(temperature);
 
+                // Finition.
+                differe.Complete();
+
                 // Faire dormir le processus pour 15 minutes.
-                Task.Delay(Convert.ToInt32(TimeSpan.FromMinutes(15d).TotalMilliseconds)).Wait();
+                Task.Delay(Convert.ToInt32(TimeSpan.FromSeconds(15d).TotalMilliseconds)).Wait();
             }
         }
     }

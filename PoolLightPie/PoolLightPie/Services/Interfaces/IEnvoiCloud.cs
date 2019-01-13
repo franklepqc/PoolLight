@@ -2,6 +2,6 @@
 {
     public interface IEnvoiCloud
     {
-        void Envoyer(double temperature);
+        void Envoyer(float temperature);
     }
 }

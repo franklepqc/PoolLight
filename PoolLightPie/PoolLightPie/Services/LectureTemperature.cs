@@ -2,6 +2,6 @@
 {
     public sealed class LectureTemperature : Interfaces.IServiceLectureTemperature
     {
-        public double Lire() => 70d;
+        public float Lire() => 70f;
     }
 }

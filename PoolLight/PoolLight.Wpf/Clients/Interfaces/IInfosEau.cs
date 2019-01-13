@@ -2,8 +2,8 @@
 {
     public interface IInfosEau
     {
-        float Temperature { get; }
-        float PH { get; }
+        float? Temperature { get; }
+        float? PH { get; }
         System.DateTime DateDerniereMAJ { get; }
     }
 }

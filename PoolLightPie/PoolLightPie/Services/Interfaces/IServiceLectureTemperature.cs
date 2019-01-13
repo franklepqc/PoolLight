@@ -2,6 +2,6 @@
 {
     public interface IServiceLectureTemperature
     {
-        double Lire();
+        float Lire();
     }
 }

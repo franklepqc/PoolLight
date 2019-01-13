@@ -1,6 +1,8 @@
 ﻿using Microsoft.Azure.Devices.Client;
 using Newtonsoft.Json;
+using System;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace PoolLightPie.Services
 {
@@ -24,7 +26,7 @@ namespace PoolLightPie.Services
         /// </summary>
         /// <param name="temperature">Température.</param>
         /// <returns>Tâche.</returns>
-        public void Envoyer(double temperature)
+        public async void Envoyer(float temperature)
         {
             // Créer le message en Json.
             var messageJson = new
@@ -39,7 +41,7 @@ namespace PoolLightPie.Services
             var message = new Message(Encoding.ASCII.GetBytes(messageString));
 
             // Envoie.
-            _deviceClient.SendEventAsync(message).Wait();
+            await _deviceClient.SendEventAsync(message);
         }
     }
 }
