@@ -33,7 +33,7 @@ namespace PoolLight.Wpf.Clients
             var retour = default(IInfosEau);
 
             // Configuration du récepteur.
-            var receiver = _hubClient.CreateReceiver("$Default", "0", EventPosition.FromEnqueuedTime(DateTime.Now.AddMinutes(-30d)));
+            var receiver = _hubClient.CreateReceiver("$Default", "0", EventPosition.FromEnqueuedTime(DateTime.Now.AddMinutes(-15d)));
 
             // Récupération des messages.
             var messages = await receiver.ReceiveAsync(100);
@@ -41,19 +41,23 @@ namespace PoolLight.Wpf.Clients
             // S'il y en a, prendre le dernier (plus à jour).
             if (messages != null && messages.Any())
             {
-                var message = messages.Last();
+                retour = messages
+                    .Select(m =>
+                    {
+                        // Conversion.
+                        string data = Encoding.UTF8.GetString(m.Body.Array);
+                        dynamic json = JsonConvert.DeserializeObject(data);
 
-                // Conversion.
-                string data = Encoding.UTF8.GetString(message.Body.Array);
-                dynamic json = JsonConvert.DeserializeObject(data);
-
-                // Assignation des nouvelles valeurs.
-                retour = new InfosEau
-                {
-                    Temperature = json.temperature,
-                    PH = json.pH,
-                    DateDerniereMAJ = (DateTime)message.SystemProperties["iothub-enqueuedtime"]
-                };
+                        // Assignation des nouvelles valeurs.
+                        return new InfosEau
+                        {
+                            Temperature = json.temperature,
+                            PH = json.pH,
+                            DateDerniereMAJ = (DateTime)m.SystemProperties["iothub-enqueuedtime"]
+                        };
+                    })
+                    .OrderByDescending(m => m.DateDerniereMAJ)
+                    .First();
             }
 
             // Fermeture du récepteur.

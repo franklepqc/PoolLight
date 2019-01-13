@@ -199,7 +199,7 @@ namespace PoolLight.Wpf.ViewModels
         public string InfosDates
         {
             get => (_dateDernierEnregistrement.HasValue && _dateRecuperation.HasValue ? 
-                $"Dernière demande {_dateRecuperation.Value:d}{System.Environment.NewLine}Dernière mise à jour {_dateDernierEnregistrement.Value:d}" : 
+                $"Dernière demande {_dateRecuperation.Value.ToLocalTime()}{System.Environment.NewLine}Dernière mise à jour {_dateDernierEnregistrement.Value.ToLocalTime()}" : 
                 default(string));
         }
 
