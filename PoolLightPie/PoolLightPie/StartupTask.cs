@@ -1,4 +1,5 @@
 ﻿using PoolLightPie.Services;
+using PoolLightPie.Services.Interfaces;
 using System;
 using System.Threading.Tasks;
 using Windows.ApplicationModel.Background;
@@ -14,9 +15,9 @@ namespace PoolLightPie
         public void Run(IBackgroundTaskInstance taskInstance)
         {
             // Services.
-            var serviceEnvoiCloud = new EnvoiCloud();
-            var serviceLectureThermometre = new LectureTemperature();
-            var serviceLecturePh = new LecturePh();
+            IEnvoiCloud serviceEnvoiCloud = new EnvoiCloud();
+            IServiceLectureTemperature serviceLectureThermometre = new LectureTemperature();
+            IServiceLecturePh serviceLecturePh = new LecturePh();
 
             while (true)
             {
