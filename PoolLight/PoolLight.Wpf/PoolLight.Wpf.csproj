@@ -5,7 +5,7 @@
     <UseWPF>true</UseWPF>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Microsoft.Azure.EventHubs" Version="3.0.0" />
+    <PackageReference Include="Microsoft.AspNet.WebApi.Client" Version="5.2.7" />
     <PackageReference Include="Prism.Unity" Version="7.2.0.1038-pre" />
     <PackageReference Include="Prism.Wpf" Version="7.2.0.1038-pre" />
   </ItemGroup>

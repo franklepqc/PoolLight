@@ -4,6 +4,5 @@
     {
         float? Temperature { get; }
         float? PH { get; }
-        System.DateTime DateDerniereMAJ { get; }
     }
 }

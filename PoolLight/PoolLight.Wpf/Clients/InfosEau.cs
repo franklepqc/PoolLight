@@ -7,7 +7,5 @@ namespace PoolLight.Wpf.Clients
         public float? Temperature { get; set; }
 
         public float? PH { get; set; }
-
-        public DateTime DateDerniereMAJ { get; set; }
     }
 }

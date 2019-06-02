@@ -26,7 +26,6 @@ namespace PoolLight.Wpf.ViewModels
         private float? _temperatureEnCelcius = new float?();
         private float? _pH = new float?();
         private System.DateTime? _dateRecuperation;
-        private System.DateTime? _dateDernierEnregistrement;
         private ModeTempEnum _modeTemperature = ModeTempEnum.Fahrenheit;
 
         #endregion Fields
@@ -198,9 +197,9 @@ namespace PoolLight.Wpf.ViewModels
         /// </summary>
         public string InfosDates
         {
-            get => (_dateDernierEnregistrement.HasValue && _dateRecuperation.HasValue ? 
-                $"Dernière demande {_dateRecuperation.Value.ToLocalTime()}{System.Environment.NewLine}Dernière mise à jour {_dateDernierEnregistrement.Value.ToLocalTime()}" : 
-                default(string));
+            get => (_dateRecuperation.HasValue ? 
+                $"Dernière demande {_dateRecuperation.Value.ToLocalTime()}" : 
+                string.Empty);
         }
 
         #endregion Properties
@@ -303,7 +302,6 @@ namespace PoolLight.Wpf.ViewModels
             {
                 Temperature = infos.Temperature;
                 pH = infos.PH;
-                _dateDernierEnregistrement = infos.DateDerniereMAJ;
 
                 RaisePropertyChanged(nameof(InfosDates));
             }
