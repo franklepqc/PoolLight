@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace PoolLight.Wpf.Clients
+﻿namespace PoolLight.Wpf.Clients
 {
     public class InfosEau : Interfaces.IInfosEau
     {

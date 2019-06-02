@@ -1,4 +1,6 @@
-﻿using System.Windows;
+﻿using System.Configuration;
+using System.Windows;
+using Microsoft.Extensions.Options;
 using PoolLight.Wpf.Clients;
 using PoolLight.Wpf.Clients.Interfaces;
 using PoolLight.Wpf.Services;
@@ -19,6 +21,11 @@ namespace PoolLight.Wpf
             containerRegistry.Register<IGestionLumiere, ClientGeneral>();
             containerRegistry.RegisterSingleton<IClientInfosEau, ClientInfosEau>();
             containerRegistry.Register<IConvertirTemperature, ConvertirTemperature>();
+
+            containerRegistry.RegisterInstance(Options.Create(new UrlConfig
+            {
+                UrlApi = ConfigurationManager.AppSettings["UrlApi"]
+            }));
         }
 
         protected override Window CreateShell() => Container.Resolve<MainWindow>();

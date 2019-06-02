@@ -301,7 +301,7 @@ namespace PoolLight.Wpf.ViewModels
             if (infos != null)
             {
                 Temperature = infos.Temperature;
-                pH = infos.PH;
+                //pH = infos.PH;
 
                 RaisePropertyChanged(nameof(InfosDates));
             }
