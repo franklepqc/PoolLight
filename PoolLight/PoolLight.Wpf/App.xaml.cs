@@ -18,12 +18,14 @@ namespace PoolLight.Wpf
     {
         protected override void RegisterTypes(IContainerRegistry containerRegistry)
         {
-            containerRegistry.RegisterSingleton<IClientInfosEau, ClientInfosEau>();
+            containerRegistry.RegisterSingleton<IClientTemperature, ClientTemperature>();
+            containerRegistry.RegisterSingleton<IClientPh, ClientPh>();
             containerRegistry.Register<IConvertirTemperature, ConvertirTemperature>();
 
             containerRegistry.RegisterInstance(Options.Create(new UrlConfig
             {
-                UrlApi = ConfigurationManager.AppSettings["UrlApi"]
+                UrlApiTemperature = ConfigurationManager.AppSettings["UrlApiTemperature"],
+                UrlApiPh = ConfigurationManager.AppSettings["UrlApiPh"]
             }));
         }
 

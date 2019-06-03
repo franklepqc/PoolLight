@@ -13,7 +13,8 @@ namespace PoolLight.Wpf.ViewModels
         /// <summary>
         /// Injections.
         /// </summary>
-        private readonly IClientInfosEau _clientInfosEau;
+        private readonly IClientTemperature _clientTemperature;
+        private readonly IClientPh _clientPh;
 
         #endregion Fields
 
@@ -22,13 +23,16 @@ namespace PoolLight.Wpf.ViewModels
         /// <summary>
         /// Constructeur par défaut.
         /// </summary>
-        public MainWindowViewModel(IClientInfosEau clientInfosEau)
+        /// <param name="clientTemperature">Client pour la température.</param>
+        /// <param name="clientPh">Client pour le pH.</param>
+        public MainWindowViewModel(IClientTemperature clientTemperature, IClientPh clientPh)
         {
             // Commandes.
             CommandeRafraichir = new DelegateCommand(Rafraichir);
 
-            // Injection.
-            _clientInfosEau = clientInfosEau;
+            // Injections.
+            _clientTemperature = clientTemperature;
+            _clientPh = clientPh;
 
             // Afficher les données.
             Rafraichir();
@@ -48,6 +52,11 @@ namespace PoolLight.Wpf.ViewModels
         /// </summary>
         public TimestampedValueTemperature Temperature { get; } = new TimestampedValueTemperature();
 
+        /// <summary>
+        /// pH.
+        /// </summary>
+        public TimestampedValue<float?> Ph { get; } = new TimestampedValue<float?>();
+
         #endregion Properties
 
         #region Methods
@@ -65,13 +74,11 @@ namespace PoolLight.Wpf.ViewModels
         /// </summary>
         private async void RecupererInfosEau()
         {
-            var infos = await _clientInfosEau.Obtenir();
+            Temperature.Data = (float)Math.Round(await _clientTemperature.Obtenir(), 0, MidpointRounding.AwayFromZero);
+            Temperature.ReceivedDateTime = DateTime.Now;
 
-            if (infos != null)
-            {
-                Temperature.Data = (float)Math.Round(infos.Temperature.Value, 0, MidpointRounding.AwayFromZero);
-                Temperature.ReceivedDateTime = DateTime.Now;
-            }
+            Ph.Data = (float)Math.Round(await _clientPh.Obtenir(), 0, MidpointRounding.AwayFromZero);
+            Ph.ReceivedDateTime = DateTime.Now;
         }
 
         #endregion Methods

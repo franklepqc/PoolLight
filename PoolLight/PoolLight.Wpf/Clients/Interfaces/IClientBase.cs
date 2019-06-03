@@ -2,8 +2,8 @@
 
 namespace PoolLight.Wpf.Clients.Interfaces
 {
-    public interface IClientInfosEau
+    public interface IClientBase<T>
     {
-        Task<IInfosEau> Obtenir();
+        Task<T> Obtenir();
     }
 }

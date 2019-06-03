@@ -2,6 +2,7 @@
 {
     public class UrlConfig
     {
-        public string UrlApi { get; set; }
+        public string UrlApiTemperature { get; set; }
+        public string UrlApiPh { get; set; }
     }
 }

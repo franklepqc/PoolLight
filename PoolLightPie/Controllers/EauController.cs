@@ -29,14 +29,19 @@ namespace PoolLightPie.Controllers
         }
 
         /// <summary>
-        /// Obtenir les informations de l'eau.
+        /// Obtenir les informations de l'eau (temperature).
         /// </summary>
         /// <returns>Température.</returns>
-        [HttpGet]
-        public IActionResult Get() =>
-            Ok(new {
-                Temperature = _lecteurTemperature.Lire(),
-                Ph = _lecteurPh.Lire()
-            });
+        [HttpGet("temperature")]
+        public IActionResult ObtenirTemperature() =>
+            Ok(_lecteurTemperature.Lire());
+
+        /// <summary>
+        /// Obtenir les informations de l'eau (pH).
+        /// </summary>
+        /// <returns>pH.</returns>
+        [HttpGet("pH")]
+        public IActionResult ObtenirPh() =>
+            Ok(_lecteurPh.Lire());
     }
 }

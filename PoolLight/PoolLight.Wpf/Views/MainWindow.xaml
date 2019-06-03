@@ -11,8 +11,10 @@
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition />
+            <ColumnDefinition />
         </Grid.ColumnDefinitions>
         
+        <!-- Température -->
         <Grid Grid.Column="0" DataContext="{Binding Path=Temperature, Mode=OneWay}">
             <Grid.RowDefinitions>
                 <RowDefinition />
@@ -53,6 +55,39 @@
                 <TextBlock Text="{Binding Path=ReceivedDateTime, Mode=OneWay}" />
             </StackPanel>
             
+        </Grid>
+
+        <!-- pH -->
+        <Grid Grid.Column="1" DataContext="{Binding Path=Ph, Mode=OneWay}">
+            <Grid.RowDefinitions>
+                <RowDefinition />
+                <RowDefinition Height="30" />
+            </Grid.RowDefinitions>
+
+            <Grid Grid.Row="0" VerticalAlignment="Center" HorizontalAlignment="Center">
+                <Grid.RowDefinitions>
+                    <RowDefinition />
+                    <RowDefinition />
+                </Grid.RowDefinitions>
+
+                <TextBlock Grid.Row="0" 
+                           VerticalAlignment="Center" 
+                           HorizontalAlignment="Center" 
+                           FontSize="22"
+                           Text="pH" />
+
+                <TextBlock Grid.Row="1" 
+                           VerticalAlignment="Stretch" 
+                           HorizontalAlignment="Stretch"
+                           Text="{Binding Path=Data, Mode=OneWay}"
+                           FontSize="24" />
+            </Grid>
+
+            <StackPanel Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Center" Orientation="Horizontal">
+                <TextBlock Text="Dernière mise à jour le : " />
+                <TextBlock Text="{Binding Path=ReceivedDateTime, Mode=OneWay}" />
+            </StackPanel>
+
         </Grid>
     </Grid>
 </Window>
