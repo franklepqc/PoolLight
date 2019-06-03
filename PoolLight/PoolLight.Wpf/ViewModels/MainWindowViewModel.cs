@@ -72,13 +72,19 @@ namespace PoolLight.Wpf.ViewModels
         /// <summary>
         /// Récupération de la température et du pH.
         /// </summary>
-        private async void RecupererInfosEau()
+        private void RecupererInfosEau()
         {
-            Temperature.Data = (float)Math.Round(await _clientTemperature.Obtenir(), 0, MidpointRounding.AwayFromZero);
-            Temperature.ReceivedDateTime = DateTime.Now;
+            ObtenirSelonClient(Temperature, _clientTemperature);
+            ObtenirSelonClient(Ph, _clientPh);
+        }
 
-            Ph.Data = (float)Math.Round(await _clientPh.Obtenir(), 0, MidpointRounding.AwayFromZero);
-            Ph.ReceivedDateTime = DateTime.Now;
+        /// <summary>
+        /// Récupération de la température et du pH.
+        /// </summary>
+        private async void ObtenirSelonClient(TimestampedValue<float?> propriete, IClientBase<float> client)
+        {
+            propriete.Data = (float)Math.Round(await client.Obtenir(), 0, MidpointRounding.AwayFromZero);
+            propriete.ReceivedDateTime = DateTime.Now;
         }
 
         #endregion Methods

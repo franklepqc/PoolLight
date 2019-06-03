@@ -77,8 +77,8 @@
                            Text="pH" />
 
                 <TextBlock Grid.Row="1" 
-                           VerticalAlignment="Stretch" 
-                           HorizontalAlignment="Stretch"
+                           VerticalAlignment="Center" 
+                           HorizontalAlignment="Center"
                            Text="{Binding Path=Data, Mode=OneWay}"
                            FontSize="24" />
             </Grid>
