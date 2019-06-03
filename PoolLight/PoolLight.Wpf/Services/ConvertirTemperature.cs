@@ -13,7 +13,7 @@ namespace PoolLight.Wpf.Services
                     return temperatureEnCelcius;
 
                 case ModeTempEnum.Fahrenheit:
-                    return (temperatureEnCelcius * 1.8f) + 32f;
+                    return (float)Math.Round((temperatureEnCelcius * 1.8f) + 32f, 0, MidpointRounding.AwayFromZero);
 
                 default:
                     throw new NotImplementedException();

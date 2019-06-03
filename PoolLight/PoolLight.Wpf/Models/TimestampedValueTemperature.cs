@@ -81,10 +81,22 @@ namespace PoolLight.Wpf.Models
         /// <summary>
         /// Mode de la température.
         /// </summary>
-        public ModeTempEnum ModeTemperature
+        public string ModeTemperature
         {
-            get => _modeTemperature;
-            set => SetProperty(ref _modeTemperature, value, () => RaisePropertyChanged(nameof(AjustedData)));
+            get
+            {
+                switch (_modeTemperature)
+                {
+                    case ModeTempEnum.Fahrenheit:
+                        return "°F";
+
+                    case ModeTempEnum.Celcius:
+                        return "°C";
+
+                    default:
+                        return string.Empty;
+                }
+            }
         }
 
         #endregion Properties
@@ -96,14 +108,19 @@ namespace PoolLight.Wpf.Models
         /// </summary>
         private void BasculerTemperature()
         {
-            if (ModeTemperature == ModeTempEnum.Celcius)
+            // Basculer.
+            if (_modeTemperature == ModeTempEnum.Celcius)
             {
-                ModeTemperature = ModeTempEnum.Fahrenheit;
+                _modeTemperature = ModeTempEnum.Fahrenheit;
             }
             else
             {
-                ModeTemperature = ModeTempEnum.Celcius;
+                _modeTemperature = ModeTempEnum.Celcius;
             }
+
+            // Affichage.
+            RaisePropertyChanged(nameof(ModeTemperature));
+            RaisePropertyChanged(nameof(AjustedData));
         }
 
         /// <summary>
