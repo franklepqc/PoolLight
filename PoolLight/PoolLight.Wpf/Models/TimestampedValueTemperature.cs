@@ -1,16 +1,25 @@
-﻿using PoolLight.Wpf.Services.Interfaces;
+﻿using PoolLight.Wpf.Services;
+using PoolLight.Wpf.Services.Interfaces;
+using Prism.Commands;
 
 namespace PoolLight.Wpf.Models
 {
+    /// <summary>
+    /// Mode de la température.
+    /// </summary>
+    public enum ModeTempEnum
+    {
+        Celcius,
+
+        Fahrenheit
+    }
+
     /// <summary>
     /// Valeur de la température avec le changement de valeurs.
     /// </summary>
     public class TimestampedValueTemperature : TimestampedValue<float?>
     {
-        /// <summary>
-        /// Valeur de départ.
-        /// </summary>
-        private ModeTempEnum _modeTemperature = ModeTempEnum.Fahrenheit;
+        #region Fields
 
         /// <summary>
         /// Convertisseur de température.
@@ -18,22 +27,30 @@ namespace PoolLight.Wpf.Models
         private readonly IConvertirTemperature _convertirTemperature;
 
         /// <summary>
+        /// Valeur de départ.
+        /// </summary>
+        private ModeTempEnum _modeTemperature = ModeTempEnum.Fahrenheit;
+
+        #endregion Fields
+
+        #region Constructors
+
+        /// <summary>
         /// Constructeur.
         /// </summary>
         /// <param name="convertirTemperature">Injection du service de conversion.</param>
-        public TimestampedValueTemperature(IConvertirTemperature convertirTemperature)
+        public TimestampedValueTemperature(IConvertirTemperature convertirTemperature = null)
         {
-            _convertirTemperature = convertirTemperature;
+            // Injection.
+            _convertirTemperature = (convertirTemperature ?? new ConvertirTemperature());
+
+            // Initialisation de la commande.
+            CommandeModeTemperature = new DelegateCommand(() => BasculerTemperature(), () => Data.HasValue);
         }
 
-        /// <summary>
-        /// Surcharge pour l'affichage de la donnée ajustée.
-        /// </summary>
-        public override float? Data
-        {
-            get => base.Data;
-            set => SetProperty(ref _data, value, () => RaisePropertyChanged(nameof(AjustedData)));
-        }
+        #endregion Constructors
+
+        #region Properties
 
         /// <summary>
         /// Valeur ajustée.
@@ -41,6 +58,24 @@ namespace PoolLight.Wpf.Models
         public float? AjustedData
         {
             get => ObtenirValeurAjustee(Data);
+        }
+
+        /// <summary>
+        /// Commande (bouton mode temp).
+        /// </summary>
+        public DelegateCommandBase CommandeModeTemperature { get; set; }
+
+        /// <summary>
+        /// Surcharge pour l'affichage de la donnée ajustée.
+        /// </summary>
+        public override float? Data
+        {
+            get => base.Data;
+            set => SetProperty(ref _data, value, () =>
+            {
+                RaisePropertyChanged(nameof(AjustedData));
+                CommandeModeTemperature.RaiseCanExecuteChanged();
+            });
         }
 
         /// <summary>
@@ -52,11 +87,14 @@ namespace PoolLight.Wpf.Models
             set => SetProperty(ref _modeTemperature, value, () => RaisePropertyChanged(nameof(AjustedData)));
         }
 
+        #endregion Properties
+
+        #region Methods
+
         /// <summary>
-        /// Éteint la lumière.
+        /// Bascule le mode de la température (°C, °F...).
         /// </summary>
-        /// <returns>Tâche.</returns>
-        internal void BasculerTemperature()
+        private void BasculerTemperature()
         {
             if (ModeTemperature == ModeTempEnum.Celcius)
             {
@@ -79,16 +117,7 @@ namespace PoolLight.Wpf.Models
 
             return _convertirTemperature.Convertir(_modeTemperature, nouvelleDonnee.Value);
         }
+
+        #endregion Methods
     }
-
-    /// <summary>
-    /// Mode de la température.
-    /// </summary>
-    public enum ModeTempEnum
-    {
-        Celcius,
-
-        Fahrenheit
-    }
-
 }

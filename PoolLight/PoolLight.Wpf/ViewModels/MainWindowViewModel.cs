@@ -1,7 +1,5 @@
 ﻿using PoolLight.Wpf.Clients.Interfaces;
 using PoolLight.Wpf.Models;
-using PoolLight.Wpf.Services;
-using PoolLight.Wpf.Services.Interfaces;
 using Prism.Commands;
 using System;
 using System.Windows.Input;
@@ -27,23 +25,18 @@ namespace PoolLight.Wpf.ViewModels
         public MainWindowViewModel(IClientInfosEau clientInfosEau)
         {
             // Commandes.
-            CommandeModeTemperature = new DelegateCommand(() => Temperature.BasculerTemperature(), () => Temperature.Data.HasValue);
             CommandeRafraichir = new DelegateCommand(Rafraichir);
 
             // Injection.
             _clientInfosEau = clientInfosEau;
 
+            // Afficher les données.
             Rafraichir();
         }
 
         #endregion Constructors
 
         #region Properties
-
-        /// <summary>
-        /// Commande (bouton mode temp).
-        /// </summary>
-        public DelegateCommandBase CommandeModeTemperature { get; set; }
 
         /// <summary>
         /// Commande.
@@ -53,7 +46,7 @@ namespace PoolLight.Wpf.ViewModels
         /// <summary>
         /// Température.
         /// </summary>
-        public TimestampedValueTemperature Temperature { get; } = new TimestampedValueTemperature(new ConvertirTemperature());
+        public TimestampedValueTemperature Temperature { get; } = new TimestampedValueTemperature();
 
         #endregion Properties
 
@@ -78,9 +71,6 @@ namespace PoolLight.Wpf.ViewModels
             {
                 Temperature.Data = (float)Math.Round(infos.Temperature.Value, 0, MidpointRounding.AwayFromZero);
                 Temperature.ReceivedDateTime = DateTime.Now;
-
-                // Signaler les champs à IU.
-                CommandeModeTemperature.RaiseCanExecuteChanged();
             }
         }
 

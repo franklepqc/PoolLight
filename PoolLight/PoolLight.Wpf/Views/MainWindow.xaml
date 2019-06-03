@@ -38,7 +38,7 @@
                         BorderThickness="0" 
                         Background="Transparent"
                         FontSize="24"
-                        Command="{Binding Path=DataContext.CommandeModeTemperature, Mode=OneTime, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Window}}">
+                        Command="{Binding Path=CommandeModeTemperature, Mode=OneTime}">
                     <Button.Content>
                         <StackPanel Orientation="Horizontal">
                             <TextBlock Text="{Binding Path=AjustedData, Mode=OneWay}" />
