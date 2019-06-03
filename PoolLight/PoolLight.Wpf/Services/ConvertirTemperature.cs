@@ -15,9 +15,6 @@ namespace PoolLight.Wpf.Services
                 case ModeTempEnum.Fahrenheit:
                     return (temperatureEnCelcius * 1.8f) + 32f;
 
-                case ModeTempEnum.Kelvin:
-                    return temperatureEnCelcius + 273.15f;
-
                 default:
                     throw new NotImplementedException();
             }

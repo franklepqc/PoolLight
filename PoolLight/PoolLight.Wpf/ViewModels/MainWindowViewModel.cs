@@ -1,6 +1,5 @@
 ﻿using PoolLight.Wpf.Clients.Interfaces;
 using PoolLight.Wpf.Services.Interfaces;
-using System.Threading.Tasks;
 using System.Windows.Input;
 
 namespace PoolLight.Wpf.ViewModels
@@ -12,19 +11,13 @@ namespace PoolLight.Wpf.ViewModels
         /// <summary>
         /// Injections.
         /// </summary>
-        private readonly IGestionLumiere _clientLumi;
         private readonly IClientInfosEau _clientInfosEau;
         private readonly IConvertirTemperature _convertirTemperature;
 
         /// <summary>
         /// Champs.
         /// </summary>
-        private bool _activiteEnCours = false, 
-                     _recupTempCompletee = true, 
-                     _recupPhCompletee = true;
-        private bool _lumiereAllumee = false;
         private float? _temperatureEnCelcius = new float?();
-        private float? _pH = new float?();
         private System.DateTime? _dateRecuperation;
         private ModeTempEnum _modeTemperature = ModeTempEnum.Fahrenheit;
 
@@ -35,15 +28,13 @@ namespace PoolLight.Wpf.ViewModels
         /// <summary>
         /// Constructeur par défaut.
         /// </summary>
-        public MainWindowViewModel(IGestionLumiere clientLumi, IClientInfosEau clientInfosEau, IConvertirTemperature convertirTemperature)
+        public MainWindowViewModel(IClientInfosEau clientInfosEau, IConvertirTemperature convertirTemperature)
         {
             // Commandes.
-            CommandeAllumer = new Prism.Commands.DelegateCommand(Basculer, () => !ActiviteEnCours);
             CommandeModeTemperature = new Prism.Commands.DelegateCommand(BasculerTemperature, () => Temperature.HasValue);
-            CommandeRafraichir = new Prism.Commands.DelegateCommand(Rafraichir, () => !ActiviteEnCours && RecuperationTemperatureCompletee && RecuperationPhCompletee);
+            CommandeRafraichir = new Prism.Commands.DelegateCommand(Rafraichir);
 
             // Injection.
-            _clientLumi = clientLumi;
             _clientInfosEau = clientInfosEau;
             _convertirTemperature = convertirTemperature;
 
@@ -53,63 +44,6 @@ namespace PoolLight.Wpf.ViewModels
         #endregion Constructors
 
         #region Properties
-
-        /// <summary>
-        /// Activité en cours.
-        /// Savoir si la demande est acheminée.
-        /// </summary>
-        public bool ActiviteEnCours
-        {
-            get { return _activiteEnCours; }
-            set
-            {
-                _activiteEnCours = value;
-                RaisePropertyChanged();
-
-                // Rafraichir l'exécution des commandes.
-                (CommandeAllumer as Prism.Commands.DelegateCommand).RaiseCanExecuteChanged();
-                (CommandeRafraichir as Prism.Commands.DelegateCommand).RaiseCanExecuteChanged();
-            }
-        }
-
-        /// <summary>
-        /// Activité de la récupération de la température en cours.
-        /// Savoir si la demande est acheminée.
-        /// </summary>
-        public bool RecuperationTemperatureCompletee
-        {
-            get { return _recupTempCompletee; }
-            set
-            {
-                _recupTempCompletee = value;
-                RaisePropertyChanged();
-                
-                // Rafraichir l'exécution des commandes.
-                (CommandeRafraichir as Prism.Commands.DelegateCommand).RaiseCanExecuteChanged();
-            }
-        }
-
-        /// <summary>
-        /// Activité de la récupération du pH en cours.
-        /// Savoir si la demande est acheminée.
-        /// </summary>
-        public bool RecuperationPhCompletee
-        {
-            get { return _recupPhCompletee; }
-            set
-            {
-                _recupPhCompletee = value;
-                RaisePropertyChanged();
-
-                // Rafraichir l'exécution des commandes.
-                (CommandeRafraichir as Prism.Commands.DelegateCommand).RaiseCanExecuteChanged();
-            }
-        }
-
-        /// <summary>
-        /// Commande (bouton).
-        /// </summary>
-        public ICommand CommandeAllumer { get; set; }
 
         /// <summary>
         /// Commande (bouton mode temp).
@@ -144,19 +78,6 @@ namespace PoolLight.Wpf.ViewModels
         }
 
         /// <summary>
-        /// pH.
-        /// </summary>
-        public float? pH
-        {
-            get => _pH;
-            set
-            {
-                _pH = value;
-                RaisePropertyChanged();
-            }
-        }
-
-        /// <summary>
         /// Mode de temperature.
         /// </summary>
         public ModeTempEnum ModeTemperature
@@ -180,75 +101,18 @@ namespace PoolLight.Wpf.ViewModels
         }
 
         /// <summary>
-        /// Indicateur si la lumière est allumée.
-        /// </summary>
-        public bool LumiereAllumee
-        {
-            get => _lumiereAllumee;
-            set
-            {
-                _lumiereAllumee = value;
-                RaisePropertyChanged();
-            }
-        }
-
-        /// <summary>
         /// Obtenir les dernières informations concernant les enregistrements.
         /// </summary>
         public string InfosDates
         {
             get => (_dateRecuperation.HasValue ? 
-                $"Dernière demande {_dateRecuperation.Value.ToLocalTime()}" : 
+                $"Dernière mise à jour : {_dateRecuperation.Value.ToLocalTime()}" : 
                 string.Empty);
         }
 
         #endregion Properties
 
         #region Methods
-
-        /// <summary>
-        /// Allume la lumière.
-        /// </summary>
-        /// <returns>Tâche.</returns>
-        private async Task Allumer()
-        {
-            if (await _clientLumi.AllumerAsync())
-            {
-                LumiereAllumee = true;
-            }
-        }
-
-        /// <summary>
-        /// Bascule (toggle).
-        /// </summary>
-        /// <returns>Tâche.</returns>
-        private async void Basculer()
-        {
-            ActiviteEnCours = true;
-
-            if (LumiereAllumee)
-            {
-                await Eteindre();
-            }
-            else
-            {
-                await Allumer();
-            }
-
-            ActiviteEnCours = false;
-        }
-
-        /// <summary>
-        /// Éteint la lumière.
-        /// </summary>
-        /// <returns>Tâche.</returns>
-        private async Task Eteindre()
-        {
-            if (await _clientLumi.EteindreAsync())
-            {
-                LumiereAllumee = false;
-            }
-        }
 
         /// <summary>
         /// Éteint la lumière.
@@ -259,10 +123,6 @@ namespace PoolLight.Wpf.ViewModels
             if (ModeTemperature == ModeTempEnum.Celcius)
             {
                 ModeTemperature = ModeTempEnum.Fahrenheit;
-            }
-            else if (ModeTemperature == ModeTempEnum.Fahrenheit)
-            {
-                ModeTemperature = ModeTempEnum.Kelvin;
             }
             else
             {
@@ -275,18 +135,7 @@ namespace PoolLight.Wpf.ViewModels
         /// </summary>
         private void Rafraichir()
         {
-            RecupererEstAllumee();
             RecupererInfosEau();
-        }
-
-        /// <summary>
-        /// Récupération si la lumière est allumée.
-        /// </summary>
-        private void RecupererEstAllumee()
-        {
-            ActiviteEnCours = true;
-            //LumiereAllumee = await _clientLumi.EstAllumeeAsync();
-            ActiviteEnCours = false;
         }
 
         /// <summary>
@@ -294,8 +143,6 @@ namespace PoolLight.Wpf.ViewModels
         /// </summary>
         private async void RecupererInfosEau()
         {
-            _dateRecuperation = System.DateTime.Now;
-
             var infos = await _clientInfosEau.Obtenir();
 
             if (infos != null)
@@ -303,6 +150,7 @@ namespace PoolLight.Wpf.ViewModels
                 Temperature = infos.Temperature;
                 //pH = infos.PH;
 
+                _dateRecuperation = System.DateTime.Now;
                 RaisePropertyChanged(nameof(InfosDates));
             }
         }
@@ -317,8 +165,6 @@ namespace PoolLight.Wpf.ViewModels
     {
         Celcius,
 
-        Fahrenheit,
-
-        Kelvin
+        Fahrenheit
     }
 }

@@ -18,7 +18,6 @@ namespace PoolLight.Wpf
     {
         protected override void RegisterTypes(IContainerRegistry containerRegistry)
         {
-            containerRegistry.Register<IGestionLumiere, ClientGeneral>();
             containerRegistry.RegisterSingleton<IClientInfosEau, ClientInfosEau>();
             containerRegistry.Register<IConvertirTemperature, ConvertirTemperature>();
 
