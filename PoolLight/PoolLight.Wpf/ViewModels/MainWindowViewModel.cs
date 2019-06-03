@@ -1,5 +1,9 @@
 ﻿using PoolLight.Wpf.Clients.Interfaces;
+using PoolLight.Wpf.Models;
+using PoolLight.Wpf.Services;
 using PoolLight.Wpf.Services.Interfaces;
+using Prism.Commands;
+using System;
 using System.Windows.Input;
 
 namespace PoolLight.Wpf.ViewModels
@@ -12,14 +16,6 @@ namespace PoolLight.Wpf.ViewModels
         /// Injections.
         /// </summary>
         private readonly IClientInfosEau _clientInfosEau;
-        private readonly IConvertirTemperature _convertirTemperature;
-
-        /// <summary>
-        /// Champs.
-        /// </summary>
-        private float? _temperatureEnCelcius = new float?();
-        private System.DateTime? _dateRecuperation;
-        private ModeTempEnum _modeTemperature = ModeTempEnum.Fahrenheit;
 
         #endregion Fields
 
@@ -28,15 +24,14 @@ namespace PoolLight.Wpf.ViewModels
         /// <summary>
         /// Constructeur par défaut.
         /// </summary>
-        public MainWindowViewModel(IClientInfosEau clientInfosEau, IConvertirTemperature convertirTemperature)
+        public MainWindowViewModel(IClientInfosEau clientInfosEau)
         {
             // Commandes.
-            CommandeModeTemperature = new Prism.Commands.DelegateCommand(BasculerTemperature, () => Temperature.HasValue);
-            CommandeRafraichir = new Prism.Commands.DelegateCommand(Rafraichir);
+            CommandeModeTemperature = new DelegateCommand(() => Temperature.BasculerTemperature(), () => Temperature.Data.HasValue);
+            CommandeRafraichir = new DelegateCommand(Rafraichir);
 
             // Injection.
             _clientInfosEau = clientInfosEau;
-            _convertirTemperature = convertirTemperature;
 
             Rafraichir();
         }
@@ -48,7 +43,7 @@ namespace PoolLight.Wpf.ViewModels
         /// <summary>
         /// Commande (bouton mode temp).
         /// </summary>
-        public ICommand CommandeModeTemperature { get; set; }
+        public DelegateCommandBase CommandeModeTemperature { get; set; }
 
         /// <summary>
         /// Commande.
@@ -58,77 +53,11 @@ namespace PoolLight.Wpf.ViewModels
         /// <summary>
         /// Température.
         /// </summary>
-        public float? Temperature
-        {
-            get
-            {
-                if (_temperatureEnCelcius.HasValue)
-                {
-                    return _convertirTemperature.Convertir(ModeTemperature, _temperatureEnCelcius.Value);
-                }
-
-                return default(float?);
-            }
-            set
-            {
-                _temperatureEnCelcius = value;
-                RaisePropertyChanged();
-                (CommandeModeTemperature as Prism.Commands.DelegateCommand).RaiseCanExecuteChanged();
-            }
-        }
-
-        /// <summary>
-        /// Mode de temperature.
-        /// </summary>
-        public ModeTempEnum ModeTemperature
-        {
-            get => _modeTemperature;
-            set
-            {
-                _modeTemperature = value;
-                RaisePropertyChanged();
-                RaisePropertyChanged(nameof(Temperature));
-                RaisePropertyChanged(nameof(ModeTemperatureStr));
-            }
-        }
-
-        /// <summary>
-        /// Mode de temperature.
-        /// </summary>
-        public string ModeTemperatureStr
-        {
-            get => (ModeTemperature == ModeTempEnum.Celcius ? "°C" : (ModeTemperature == ModeTempEnum.Fahrenheit ? "°F" : "K"));
-        }
-
-        /// <summary>
-        /// Obtenir les dernières informations concernant les enregistrements.
-        /// </summary>
-        public string InfosDates
-        {
-            get => (_dateRecuperation.HasValue ? 
-                $"Dernière mise à jour : {_dateRecuperation.Value.ToLocalTime()}" : 
-                string.Empty);
-        }
+        public TimestampedValueTemperature Temperature { get; } = new TimestampedValueTemperature(new ConvertirTemperature());
 
         #endregion Properties
 
         #region Methods
-
-        /// <summary>
-        /// Éteint la lumière.
-        /// </summary>
-        /// <returns>Tâche.</returns>
-        private void BasculerTemperature()
-        {
-            if (ModeTemperature == ModeTempEnum.Celcius)
-            {
-                ModeTemperature = ModeTempEnum.Fahrenheit;
-            }
-            else
-            {
-                ModeTemperature = ModeTempEnum.Celcius;
-            }
-        }
 
         /// <summary>
         /// Rafraichir les valeurs.
@@ -147,24 +76,14 @@ namespace PoolLight.Wpf.ViewModels
 
             if (infos != null)
             {
-                Temperature = infos.Temperature;
-                //pH = infos.PH;
+                Temperature.Data = (float)Math.Round(infos.Temperature.Value, 0, MidpointRounding.AwayFromZero);
+                Temperature.ReceivedDateTime = DateTime.Now;
 
-                _dateRecuperation = System.DateTime.Now;
-                RaisePropertyChanged(nameof(InfosDates));
+                // Signaler les champs à IU.
+                CommandeModeTemperature.RaiseCanExecuteChanged();
             }
         }
 
         #endregion Methods
-    }
-
-    /// <summary>
-    /// Mode de la température.
-    /// </summary>
-    public enum ModeTempEnum
-    {
-        Celcius,
-
-        Fahrenheit
     }
 }

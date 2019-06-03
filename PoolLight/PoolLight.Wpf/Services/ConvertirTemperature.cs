@@ -1,4 +1,4 @@
-﻿using PoolLight.Wpf.ViewModels;
+﻿using PoolLight.Wpf.Models;
 using System;
 
 namespace PoolLight.Wpf.Services

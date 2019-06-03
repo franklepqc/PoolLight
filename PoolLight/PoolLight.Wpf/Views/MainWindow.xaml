@@ -12,7 +12,8 @@
         <Grid.ColumnDefinitions>
             <ColumnDefinition />
         </Grid.ColumnDefinitions>
-        <Grid>
+        
+        <Grid Grid.Column="0" DataContext="{Binding Path=Temperature, Mode=OneWay}">
             <Grid.RowDefinitions>
                 <RowDefinition />
                 <RowDefinition Height="30" />
@@ -37,17 +38,21 @@
                         BorderThickness="0" 
                         Background="Transparent"
                         FontSize="24"
-                        Command="{Binding Path=CommandeModeTemperature, Mode=OneTime}">
+                        Command="{Binding Path=DataContext.CommandeModeTemperature, Mode=OneTime, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Window}}">
                     <Button.Content>
                         <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="{Binding Path=Temperature, Mode=OneWay}" />
-                            <TextBlock Text="{Binding Path=ModeTemperatureStr, Mode=OneWay}" />
+                            <TextBlock Text="{Binding Path=AjustedData, Mode=OneWay}" />
+                            <TextBlock Text="{Binding Path=ModeTemperature, Mode=OneWay}" />
                         </StackPanel>
                     </Button.Content>
                 </Button>
             </Grid>
 
-            <TextBlock Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Center" Text="{Binding Path=InfosDates, Mode=OneWay}" />
+            <StackPanel Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Center" Orientation="Horizontal">
+                <TextBlock Text="Dernière mise à jour le : " />
+                <TextBlock Text="{Binding Path=ReceivedDateTime, Mode=OneWay}" />
+            </StackPanel>
+            
         </Grid>
     </Grid>
 </Window>
