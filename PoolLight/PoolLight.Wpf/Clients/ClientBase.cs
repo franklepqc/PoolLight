@@ -13,7 +13,7 @@ namespace PoolLight.Wpf.Clients
         /// </summary>
         /// <param name="url">Url de l'appel de l'API.</param>
         /// <returns>Valeur.</returns>
-        protected Task<float> Obtenir(string url) => (new HttpClient())
+        protected Task<float> Obtenir(string url) => HttpClientFactory.Create()
             .GetAsync(url)
             .ContinueWith(reponse => (reponse.IsCompletedSuccessfully ? reponse.Result.Content.ReadAsAsync<float>() : Task.FromResult<float>(default)))
             .ContinueWith(reponse => reponse.Result.Result);
