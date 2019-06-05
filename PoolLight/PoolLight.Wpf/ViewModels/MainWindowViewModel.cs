@@ -75,7 +75,7 @@ namespace PoolLight.Wpf.ViewModels
         private void RecupererInfosEau()
         {
             ObtenirSelonClient(Temperature, _clientTemperature);
-            ObtenirSelonClient(Ph, _clientPh);
+            //ObtenirSelonClient(Ph, _clientPh);
         }
 
         /// <summary>
