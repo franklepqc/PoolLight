@@ -55,7 +55,7 @@ namespace PoolLight.Wpf.ViewModels
         /// <summary>
         /// pH.
         /// </summary>
-        public TimestampedValue<float?> Ph { get; } = new TimestampedValue<float?>();
+        public TimestampedValue<int?> Ph { get; } = new TimestampedValue<int?>();
 
         #endregion Properties
 
@@ -81,9 +81,9 @@ namespace PoolLight.Wpf.ViewModels
         /// <summary>
         /// Récupération de la température et du pH.
         /// </summary>
-        private async void ObtenirSelonClient(TimestampedValue<float?> propriete, IClientBase<float> client)
+        private async void ObtenirSelonClient(TimestampedValue<int?> propriete, IClientBase<float> client)
         {
-            propriete.Data = (float)Math.Round(await client.Obtenir(), 0, MidpointRounding.AwayFromZero);
+            propriete.Data = Convert.ToInt32(Math.Round(await client.Obtenir(), 0, MidpointRounding.AwayFromZero));
             propriete.ReceivedDateTime = DateTime.Now;
         }
 

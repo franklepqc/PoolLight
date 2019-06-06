@@ -1,6 +1,7 @@
 ﻿using PoolLight.Wpf.Services;
 using PoolLight.Wpf.Services.Interfaces;
 using Prism.Commands;
+using System;
 
 namespace PoolLight.Wpf.Models
 {
@@ -17,7 +18,7 @@ namespace PoolLight.Wpf.Models
     /// <summary>
     /// Valeur de la température avec le changement de valeurs.
     /// </summary>
-    public class TimestampedValueTemperature : TimestampedValue<float?>
+    public class TimestampedValueTemperature : TimestampedValue<int?>
     {
         #region Fields
 
@@ -55,7 +56,7 @@ namespace PoolLight.Wpf.Models
         /// <summary>
         /// Valeur ajustée.
         /// </summary>
-        public float? AjustedData
+        public int? AjustedData
         {
             get => ObtenirValeurAjustee(Data);
         }
@@ -68,7 +69,7 @@ namespace PoolLight.Wpf.Models
         /// <summary>
         /// Surcharge pour l'affichage de la donnée ajustée.
         /// </summary>
-        public override float? Data
+        public override int? Data
         {
             get => base.Data;
             set => SetProperty(ref _data, value, () =>
@@ -128,11 +129,11 @@ namespace PoolLight.Wpf.Models
         /// </summary>
         /// <param name="nouvelleDonnee">Nouvelle donnée.</param>
         /// <returns>Valeur ajustée.</returns>
-        private float? ObtenirValeurAjustee(float? nouvelleDonnee)
+        private int? ObtenirValeurAjustee(int? nouvelleDonnee)
         {
             if (!nouvelleDonnee.HasValue) return null;
 
-            return _convertirTemperature.Convertir(_modeTemperature, nouvelleDonnee.Value);
+            return Convert.ToInt32(Math.Round(_convertirTemperature.Convertir(_modeTemperature, nouvelleDonnee.Value), 0, MidpointRounding.AwayFromZero));
         }
 
         #endregion Methods
