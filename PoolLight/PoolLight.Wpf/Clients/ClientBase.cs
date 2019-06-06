@@ -1,4 +1,5 @@
-﻿using System.Net.Http;
+﻿using System;
+using System.Net.Http;
 using System.Threading.Tasks;
 
 namespace PoolLight.Wpf.Clients
@@ -9,19 +10,26 @@ namespace PoolLight.Wpf.Clients
     public abstract class ClientBase
     {
         /// <summary>
-        /// Obtention d'une valeur avec l'aide de l'url passée en passée.
+        /// Url.
         /// </summary>
-        /// <param name="url">Url de l'appel de l'API.</param>
-        /// <returns>Valeur.</returns>
-        protected Task<float> Obtenir(string url) => HttpClientFactory.Create()
-            .GetAsync(url)
-            .ContinueWith(reponse => (reponse.IsCompletedSuccessfully ? reponse.Result.Content.ReadAsAsync<float>() : Task.FromResult<float>(default)))
-            .ContinueWith(reponse => reponse.Result.Result);
+        private readonly string _url;
 
         /// <summary>
-        /// Doit implémenter la méthode.
+        /// Constructeur par défaut.
         /// </summary>
-        /// <returns>La valeur.</returns>
-        public abstract Task<float> Obtenir();
+        /// <param name="propriete">Propriété contenant l'url.</param>
+        protected ClientBase(Func<string> propriete)
+        {
+            _url = propriete.Invoke();
+        }
+
+        /// <summary>
+        /// Obtention de la valeur selon l'url.
+        /// </summary>
+        /// <returns>Valeur.</returns>
+        public Task<float> Obtenir() => HttpClientFactory.Create()
+            .GetAsync(_url)
+            .ContinueWith(reponse => (reponse.IsCompletedSuccessfully ? reponse.Result.Content.ReadAsAsync<float>() : Task.FromResult<float>(default)))
+            .ContinueWith(reponse => reponse.Result.Result);
     }
 }
