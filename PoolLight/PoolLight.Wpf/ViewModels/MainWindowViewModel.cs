@@ -83,7 +83,16 @@ namespace PoolLight.Wpf.ViewModels
         /// </summary>
         private async void ObtenirSelonClient(TimestampedValue<int?> propriete, IClientBase<float> client)
         {
-            propriete.Data = Convert.ToInt32(Math.Round(await client.Obtenir(), 0, MidpointRounding.AwayFromZero));
+            // Récupération de la valeur.
+            var valeur = await client.Obtenir();
+
+            // Si une valeur exacte est trouvée, faire son assignation.
+            if (valeur != default)
+            {
+                propriete.Data = Convert.ToInt32(Math.Round(valeur, 0, MidpointRounding.AwayFromZero));
+            }
+
+            // Indiquer la dernière exécution.
             propriete.ReceivedDateTime = DateTime.Now;
         }
 
