@@ -7,7 +7,7 @@ namespace PoolLight.Wpf.Clients
     /// <summary>
     /// Client pour les informations de l'eau.
     /// </summary>
-    public abstract class ClientBase
+    public abstract class ClientBase<T>
     {
         /// <summary>
         /// Url.
@@ -27,9 +27,9 @@ namespace PoolLight.Wpf.Clients
         /// Obtention de la valeur selon l'url.
         /// </summary>
         /// <returns>Valeur.</returns>
-        public Task<float> Obtenir() => HttpClientFactory.Create()
+        public Task<T> Obtenir() => HttpClientFactory.Create()
             .GetAsync(_url)
-            .ContinueWith(reponse => (reponse.IsCompletedSuccessfully ? reponse.Result.Content.ReadAsAsync<float>() : Task.FromResult<float>(default)))
+            .ContinueWith(reponse => (reponse.IsCompletedSuccessfully ? reponse.Result.Content.ReadAsAsync<T>() : Task.FromResult<T>(default)))
             .ContinueWith(reponse => reponse.Result.Result);
     }
 }

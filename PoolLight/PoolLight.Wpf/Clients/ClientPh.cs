@@ -6,7 +6,7 @@ namespace PoolLight.Wpf.Clients
     /// <summary>
     /// Client pour les informations de l'eau.
     /// </summary>
-    public class ClientPh : ClientBase, IClientPh
+    public class ClientPh : ClientBase<float>, IClientPh
     {
         /// <summary>
         /// Constructeur par défaut.

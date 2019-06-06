@@ -6,7 +6,7 @@ namespace PoolLight.Wpf.Clients
     /// <summary>
     /// Client pour les informations de l'eau.
     /// </summary>
-    public class ClientTemperature : ClientBase, IClientTemperature
+    public class ClientTemperature : ClientBase<float>, IClientTemperature
     {
         /// <summary>
         /// Constructeur par défaut.
