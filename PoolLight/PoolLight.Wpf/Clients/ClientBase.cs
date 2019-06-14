@@ -31,14 +31,14 @@ namespace PoolLight.Wpf.Clients
         /// <returns>Valeur.</returns>
         public Task<T> Obtenir() => HttpClientFactory.Create()
             .GetAsync(_url)
-            .ContinueWith(reponse => ResultatRequete(reponse));
+            .ContinueWith(TraiterResultatRequete);
 
         /// <summary>
         /// Traiter le résultat de la requête.
         /// </summary>
         /// <param name="responseMessage">Réponse du travail fait par le client Http.</param>
         /// <returns>Instance selon le type demandé.</returns>
-        private T ResultatRequete(Task<HttpResponseMessage> responseMessage)
+        private T TraiterResultatRequete(Task<HttpResponseMessage> responseMessage)
         {
             // Valeur de retour.
             var retour = default(T);
