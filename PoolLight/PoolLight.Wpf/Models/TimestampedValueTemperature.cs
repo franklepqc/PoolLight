@@ -40,10 +40,10 @@ namespace PoolLight.Wpf.Models
         /// Constructeur.
         /// </summary>
         /// <param name="convertirTemperature">Injection du service de conversion.</param>
-        public TimestampedValueTemperature(IConvertirTemperature convertirTemperature = null)
+        public TimestampedValueTemperature(IConvertirTemperature convertirTemperature)
         {
             // Injection.
-            _convertirTemperature = (convertirTemperature ?? new ConvertirTemperature());
+            _convertirTemperature = convertirTemperature;
 
             // Initialisation de la commande.
             CommandeModeTemperature = new DelegateCommand(() => BasculerTemperature(), () => Data.HasValue);

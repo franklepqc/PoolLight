@@ -1,5 +1,6 @@
 ﻿using PoolLight.Wpf.Clients.Interfaces;
 using PoolLight.Wpf.Models;
+using PoolLight.Wpf.Services.Interfaces;
 using Prism.Commands;
 using System;
 using System.Windows.Input;
@@ -25,8 +26,12 @@ namespace PoolLight.Wpf.ViewModels
         /// </summary>
         /// <param name="clientTemperature">Client pour la température.</param>
         /// <param name="clientPh">Client pour le pH.</param>
-        public MainWindowViewModel(IClientTemperature clientTemperature, IClientPh clientPh)
+        public MainWindowViewModel(IClientTemperature clientTemperature, IClientPh clientPh, IConvertirTemperature convertirTemperature)
         {
+            // Propriétés.
+            Temperature = new TimestampedValueTemperature(convertirTemperature);
+            Ph = new TimestampedValue<int?>();
+
             // Commandes.
             CommandeRafraichir = new DelegateCommand(Rafraichir);
 
@@ -50,12 +55,12 @@ namespace PoolLight.Wpf.ViewModels
         /// <summary>
         /// Température.
         /// </summary>
-        public TimestampedValueTemperature Temperature { get; } = new TimestampedValueTemperature();
+        public TimestampedValueTemperature Temperature { get; }
 
         /// <summary>
         /// pH.
         /// </summary>
-        public TimestampedValue<int?> Ph { get; } = new TimestampedValue<int?>();
+        public TimestampedValue<int?> Ph { get; }
 
         #endregion Properties
 
