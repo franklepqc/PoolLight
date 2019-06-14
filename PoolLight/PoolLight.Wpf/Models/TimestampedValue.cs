@@ -12,29 +12,37 @@ namespace PoolLight.Wpf.Models
         /// <summary>
         /// Champ date.
         /// </summary>
-        protected DateTime? _receivedDateTime;
+        private DateTime? _receivedDateTime;
 
         /// <summary>
         /// Donnée.
         /// </summary>
-        protected T _data;
+        private T _data;
 
         /// <summary>
         /// Donnée.
         /// </summary>
-        public virtual T Data
+        public T Data
         {
             get => _data;
-            set => SetProperty(ref _data, value);
+            set => SetProperty(ref _data, value, OnDataPropertyChanged);
         }
 
         /// <summary>
         /// Date / heure réception.
         /// </summary>
-        public virtual DateTime? ReceivedDateTime
+        public DateTime? ReceivedDateTime
         {
             get => _receivedDateTime;
             set => SetProperty(ref _receivedDateTime, value);
+        }
+
+        /// <summary>
+        /// Sur changement de la propriété.
+        /// </summary>
+        protected virtual void OnDataPropertyChanged()
+        {
+            // Rien à faire.
         }
     }
 }

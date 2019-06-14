@@ -67,19 +67,6 @@ namespace PoolLight.Wpf.Models
         public DelegateCommandBase CommandeModeTemperature { get; set; }
 
         /// <summary>
-        /// Surcharge pour l'affichage de la donnée ajustée.
-        /// </summary>
-        public override int? Data
-        {
-            get => base.Data;
-            set => SetProperty(ref _data, value, () =>
-            {
-                RaisePropertyChanged(nameof(AjustedData));
-                CommandeModeTemperature.RaiseCanExecuteChanged();
-            });
-        }
-
-        /// <summary>
         /// Mode de la température.
         /// </summary>
         public string ModeTemperature
@@ -103,6 +90,15 @@ namespace PoolLight.Wpf.Models
         #endregion Properties
 
         #region Methods
+
+        /// <summary>
+        /// Sur changement de la propriété "Data".
+        /// </summary>
+        protected override void OnDataPropertyChanged()
+        {
+            RaisePropertyChanged(nameof(AjustedData));
+            CommandeModeTemperature.RaiseCanExecuteChanged();
+        }
 
         /// <summary>
         /// Bascule le mode de la température (°C, °F...).
