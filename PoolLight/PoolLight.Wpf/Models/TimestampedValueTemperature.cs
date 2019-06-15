@@ -46,7 +46,7 @@ namespace PoolLight.Wpf.Models
             _convertirTemperature = convertirTemperature;
 
             // Initialisation de la commande.
-            CommandeModeTemperature = new DelegateCommand(() => BasculerTemperature(), () => Data.HasValue);
+            CommandeModeTemperature = new DelegateCommand(BasculerTemperature, () => Data.HasValue);
         }
 
         #endregion Constructors
