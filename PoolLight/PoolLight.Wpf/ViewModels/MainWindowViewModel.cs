@@ -95,6 +95,13 @@ namespace PoolLight.Wpf.ViewModels
             if (valeur != default)
             {
                 propriete.Data = Convert.ToInt32(Math.Round(valeur, 0, MidpointRounding.AwayFromZero));
+                propriete.AfficherMessageConnectivite = false;
+            }
+            // Si aucune valeur est retournée, vider la valeur actuelle.
+            else
+            {
+                propriete.Data = null;
+                propriete.AfficherMessageConnectivite = true;
             }
 
             // Indiquer la dernière exécution.

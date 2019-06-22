@@ -53,6 +53,20 @@
             <StackPanel Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Center" Orientation="Horizontal">
                 <TextBlock Text="Dernière mise à jour le : " />
                 <TextBlock Text="{Binding Path=ReceivedDateTime, Mode=OneWay}" />
+
+                <TextBlock Text="i" 
+                           FontFamily="Webdings" 
+                           FontSize="18" 
+                           ToolTip="Une erreur est survenue lors de la récupération des informations">
+                    <TextBlock.Visibility>
+                        <Binding Path="AfficherMessageConnectivite" Mode="OneWay">
+                            <Binding.Converter>
+                                <BooleanToVisibilityConverter />
+                            </Binding.Converter>
+                        </Binding>
+                    </TextBlock.Visibility>
+                </TextBlock>
+
             </StackPanel>
             
         </Grid>

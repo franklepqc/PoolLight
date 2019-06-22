@@ -20,6 +20,11 @@ namespace PoolLight.Wpf.Models
         private T _data;
 
         /// <summary>
+        /// Afficher un message pour l'erreur de connectivité.
+        /// </summary>
+        private bool _afficherMessageConnectivite = false;
+
+        /// <summary>
         /// Donnée.
         /// </summary>
         public T Data
@@ -35,6 +40,15 @@ namespace PoolLight.Wpf.Models
         {
             get => _receivedDateTime;
             set => SetProperty(ref _receivedDateTime, value);
+        }
+
+        /// <summary>
+        /// Afficher un message ou non pour la connectivité.
+        /// </summary>
+        public bool AfficherMessageConnectivite
+        {
+            get => _afficherMessageConnectivite;
+            set => SetProperty(ref _afficherMessageConnectivite, value);
         }
 
         /// <summary>
