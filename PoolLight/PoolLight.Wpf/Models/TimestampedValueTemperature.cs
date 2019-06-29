@@ -1,5 +1,4 @@
-﻿using PoolLight.Wpf.Services;
-using PoolLight.Wpf.Services.Interfaces;
+﻿using PoolLight.Wpf.Services.Interfaces;
 using Prism.Commands;
 using System;
 
@@ -98,6 +97,7 @@ namespace PoolLight.Wpf.Models
         {
             RaisePropertyChanged(nameof(AjustedData));
             CommandeModeTemperature.RaiseCanExecuteChanged();
+            base.OnDataPropertyChanged();
         }
 
         /// <summary>

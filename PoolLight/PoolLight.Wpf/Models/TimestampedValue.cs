@@ -25,6 +25,11 @@ namespace PoolLight.Wpf.Models
         private bool _afficherMessageConnectivite = false;
 
         /// <summary>
+        /// Détermine si la donnée est récupérée.
+        /// </summary>
+        public bool IsDataOk => _data != default;
+
+        /// <summary>
         /// Donnée.
         /// </summary>
         public T Data
@@ -56,7 +61,8 @@ namespace PoolLight.Wpf.Models
         /// </summary>
         protected virtual void OnDataPropertyChanged()
         {
-            // Rien à faire.
+            // De base, signaler que la donnée est récupérée.
+            RaisePropertyChanged(nameof(IsDataOk));
         }
     }
 }

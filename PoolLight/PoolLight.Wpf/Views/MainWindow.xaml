@@ -25,6 +25,7 @@
                 <Grid.RowDefinitions>
                     <RowDefinition />
                     <RowDefinition />
+                    <RowDefinition Height="30" />
                 </Grid.RowDefinitions>
 
                 <TextBlock Grid.Row="0" 
@@ -32,6 +33,24 @@
                            HorizontalAlignment="Center" 
                            FontSize="22"
                            Text="Température" />
+
+                <TextBlock Grid.Row="1"
+                           Grid.RowSpan="2"
+                           VerticalAlignment="Center"
+                           HorizontalAlignment="Center"
+                           Text="i" 
+                           FontFamily="Webdings" 
+                           FontSize="52" 
+                           Panel.ZIndex="1"
+                           ToolTip="Une erreur est survenue lors de la récupération des informations">
+                    <TextBlock.Visibility>
+                        <Binding Path="AfficherMessageConnectivite" Mode="OneWay">
+                            <Binding.Converter>
+                                <BooleanToVisibilityConverter />
+                            </Binding.Converter>
+                        </Binding>
+                    </TextBlock.Visibility>
+                </TextBlock>
 
                 <Button Grid.Row="1" 
                         VerticalAlignment="Stretch" 
@@ -47,28 +66,45 @@
                             <TextBlock Text="{Binding Path=ModeTemperature, Mode=OneWay}" />
                         </StackPanel>
                     </Button.Content>
+                    <Button.Visibility>
+                        <Binding Path="IsDataOk" Mode="OneWay">
+                            <Binding.Converter>
+                                <BooleanToVisibilityConverter />
+                            </Binding.Converter>
+                        </Binding>
+                    </Button.Visibility>
                 </Button>
+
+                <Slider Grid.Row="2"
+                        VerticalAlignment="Center"
+                        Minimum="10"
+                        Maximum="35">
+                    <Slider.Background>
+                        <LinearGradientBrush StartPoint="0,5" EndPoint="1,5">
+                            <LinearGradientBrush.GradientStops>
+                                <GradientStop Offset="0" Color="#FF0080FF" />
+                                <GradientStop Offset="0.5" Color="Yellow" />
+                                <GradientStop Offset="1" Color="Red" />
+                            </LinearGradientBrush.GradientStops>
+                        </LinearGradientBrush>
+                    </Slider.Background>
+                    <Slider.Value>
+                        <Binding Path="Data" Mode="OneWay" />
+                    </Slider.Value>
+                    <Slider.Visibility>
+                        <Binding Path="IsDataOk" Mode="OneWay">
+                            <Binding.Converter>
+                                <BooleanToVisibilityConverter />
+                            </Binding.Converter>
+                        </Binding>
+                    </Slider.Visibility>
+                </Slider>
             </Grid>
 
             <StackPanel Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Center" Orientation="Horizontal">
                 <TextBlock Text="Dernière mise à jour le : " />
                 <TextBlock Text="{Binding Path=ReceivedDateTime, Mode=OneWay}" />
-
-                <TextBlock Text="i" 
-                           FontFamily="Webdings" 
-                           FontSize="18" 
-                           ToolTip="Une erreur est survenue lors de la récupération des informations">
-                    <TextBlock.Visibility>
-                        <Binding Path="AfficherMessageConnectivite" Mode="OneWay">
-                            <Binding.Converter>
-                                <BooleanToVisibilityConverter />
-                            </Binding.Converter>
-                        </Binding>
-                    </TextBlock.Visibility>
-                </TextBlock>
-
             </StackPanel>
-            
         </Grid>
 
         <!-- pH -->
