@@ -18,7 +18,7 @@ namespace PoolLight.Wpf.Services
             mode switch
             {
                 ModeTempEnum.Celcius => temperatureEnCelcius,
-                ModeTempEnum.Fahrenheit => (float)Math.Round((temperatureEnCelcius * 1.8f) + 32f, 0, MidpointRounding.AwayFromZero),
+                ModeTempEnum.Fahrenheit => (temperatureEnCelcius * 1.8f) + 32f,
                 _ => throw new NotImplementedException()
             };
     }
