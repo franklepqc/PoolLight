@@ -21,7 +21,7 @@
                 <RowDefinition Height="30" />
             </Grid.RowDefinitions>
 
-            <Grid Grid.Row="0" VerticalAlignment="Center" HorizontalAlignment="Center">
+            <Grid Grid.Row="0" VerticalAlignment="Center" HorizontalAlignment="Stretch" Margin="5,0">
                 <Grid.RowDefinitions>
                     <RowDefinition />
                     <RowDefinition />
@@ -77,6 +77,7 @@
 
                 <Slider Grid.Row="2"
                         VerticalAlignment="Center"
+                        IsEnabled="False"
                         Minimum="10"
                         Maximum="35">
                     <Slider.Background>
@@ -114,10 +115,11 @@
                 <RowDefinition Height="30" />
             </Grid.RowDefinitions>
 
-            <Grid Grid.Row="0" VerticalAlignment="Center" HorizontalAlignment="Center">
+            <Grid Grid.Row="0" VerticalAlignment="Center" HorizontalAlignment="Stretch" Margin="5,0">
                 <Grid.RowDefinitions>
                     <RowDefinition />
                     <RowDefinition />
+                    <RowDefinition Height="30" />
                 </Grid.RowDefinitions>
 
                 <TextBlock Grid.Row="0" 
@@ -126,18 +128,70 @@
                            FontSize="22"
                            Text="pH" />
 
+                <TextBlock Grid.Row="1"
+                           Grid.RowSpan="2"
+                           VerticalAlignment="Center"
+                           HorizontalAlignment="Center"
+                           Text="i" 
+                           FontFamily="Webdings" 
+                           FontSize="52" 
+                           Panel.ZIndex="1"
+                           ToolTip="Une erreur est survenue lors de la récupération des informations">
+                    <TextBlock.Visibility>
+                        <Binding Path="AfficherMessageConnectivite" Mode="OneWay">
+                            <Binding.Converter>
+                                <BooleanToVisibilityConverter />
+                            </Binding.Converter>
+                        </Binding>
+                    </TextBlock.Visibility>
+                </TextBlock>
+
                 <TextBlock Grid.Row="1" 
                            VerticalAlignment="Center" 
-                           HorizontalAlignment="Center"
+                           HorizontalAlignment="Center" 
                            Text="{Binding Path=Data, Mode=OneWay}"
-                           FontSize="24" />
+                           FontSize="24">
+                    <TextBlock.Visibility>
+                        <Binding Path="IsDataOk" Mode="OneWay">
+                            <Binding.Converter>
+                                <BooleanToVisibilityConverter />
+                            </Binding.Converter>
+                        </Binding>
+                    </TextBlock.Visibility>
+                </TextBlock>
+
+                <Slider Grid.Row="2"
+                        VerticalAlignment="Center"
+                        IsEnabled="False"
+                        Minimum="0"
+                        Maximum="14">
+                    <Slider.Background>
+                        <LinearGradientBrush StartPoint="0,5" EndPoint="1,5">
+                            <LinearGradientBrush.GradientStops>
+                                <GradientStop Offset="0" Color="Red" />
+                                <GradientStop Offset="0.3" Color="#FF0080FF" />
+                                <GradientStop Offset="0.8" Color="#FF0080FF" />
+                                <GradientStop Offset="1" Color="Red" />
+                            </LinearGradientBrush.GradientStops>
+                        </LinearGradientBrush>
+                    </Slider.Background>
+                    <Slider.Value>
+                        <Binding Path="Data" Mode="OneWay" />
+                    </Slider.Value>
+                    <Slider.Visibility>
+                        <Binding Path="IsDataOk" Mode="OneWay">
+                            <Binding.Converter>
+                                <BooleanToVisibilityConverter />
+                            </Binding.Converter>
+                        </Binding>
+                    </Slider.Visibility>
+                </Slider>
             </Grid>
 
             <StackPanel Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Center" Orientation="Horizontal">
                 <TextBlock Text="Dernière mise à jour le : " />
                 <TextBlock Text="{Binding Path=ReceivedDateTime, Mode=OneWay}" />
             </StackPanel>
-
         </Grid>-->
     </Grid>
 </Window>
